@@ -24,7 +24,7 @@ def perguntar():
     db = Chroma(persist_directory=CAMINHO_DB, embedding_function=funcao_embedding)
 
     # comparar a pergunta do usuário (embedding) com o meu banco de dados
-    resultados = db.similarity_search_with_relevance_scores(pergunta, k=5)
+    resultados = db.similarity_search_with_relevance_scores(pergunta, k=10)
     if len(resultados) == 0 or resultados [0][1] < 0.7:
         print("Não conseguiu encontrar alguma infomração relevante na base")
         return
