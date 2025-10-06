@@ -19,19 +19,31 @@ CORS(app)
 # 🔹 Respostas fixas (não dependem dos documentos)
 respostas_predefinidas = {
     "ola": "Olá! 👋 Como posso te ajudar hoje?",
-    "olá": "Olá! 👋 Como posso te ajudar hoje?",
+    "olá": "Olá! 👋 Como posso te ajudar hoje!",
     "oi": "Oi! Tudo bem? 😊",
     "tudo bem?": "Estou funcionando perfeitamente! E você?",
     "pode me ajudar?": "Claro! É só perguntar que eu tento te ajudar com as informações da base. 🚀",
+    "obrigado": "De nada! Se precisar de mais alguma coisa, é só chamar. 😊",
+    "obrigada": "De nada! Se precisar de mais alguma coisa, é só chamar. 😊",
+    "valeu": "Por nada! Qualquer dúvida, estou aqui.",
+    "agradecido": "Fico feliz em ajudar! Se precisar, é só perguntar.",
+    "agradecida": "Fico feliz em ajudar! Se precisar, é só perguntar.",
+    "bom dia": "Bom dia! Espero que seu dia seja ótimo! ☀️",
+    "boa tarde": "Boa tarde! Como posso ajudar?",
+    "boa noite": "Boa noite! Se precisar de algo, estou à disposição.",
 }
 
 # 🔹 Template do prompt
 prompt_template = """
-Responda à pergunta do usuário:
+Responda à pergunta do usuário de forma clara, simpática e acolhedora, mas utilize apenas as informações fornecidas abaixo. Não adicione informações que não estejam presentes no texto. Não mencione que está usando documentos ou base de dados.
+
+Pergunta:
 {pergunta}
 
-Com base nas informações abaixo (extraídas dos documentos):
+Informações fornecidas:
 {base_conhecimento}
+
+Se não souber a resposta, diga apenas 'Não sei.'
 """
 
 # Função principal para gerar resposta
@@ -51,17 +63,26 @@ def gerar_resposta(pergunta: str) -> str:
     if len(resultados) == 0:
         return "Não consegui encontrar nenhuma informação relevante na base de conhecimento."
 
-    # Filtrar apenas os trechos com relevância mínima
-    textos_resultado = [
-        resultado[0].page_content
-        for resultado in resultados if resultado[1] >= 0.6
-    ]
 
-    if not textos_resultado:
-        return "Encontrei informações, mas a relevância foi muito baixa."
 
-    # 4️⃣ Concatenar os trechos em uma base de conhecimento
-    base_conhecimento = "\n\n----\n\n".join(textos_resultado)
+    # Sempre retorna pelo menos o chunk mais próximo
+    if not resultados:
+        return "Não consegui encontrar nenhuma informação relevante na base de conhecimento."
+
+    # Tenta priorizar o chunk do tipo 'resposta'
+    resposta_chunk = None
+    for resultado in resultados:
+        metadata = getattr(resultado[0], 'metadata', {})
+        if metadata.get('tipo') == 'resposta':
+            resposta_chunk = resultado[0].page_content
+            break
+
+    # Se não achar, pega o chunk mais próximo (primeiro resultado)
+    if not resposta_chunk:
+        resposta_chunk = resultados[0][0].page_content
+
+    # 4️⃣ Montar base de conhecimento só com o chunk escolhido
+    base_conhecimento = resposta_chunk
 
     # 5️⃣ Montar prompt
     prompt = ChatPromptTemplate.from_template(prompt_template)
@@ -81,15 +102,23 @@ def home():
 
 # 🔹 Rota para perguntas (usada pelo frontend)
 @app.route('/perguntar', methods=['POST'])
+
 def perguntar():
-    data = request.json
-    pergunta = data.get('pergunta', '')
+    try:
+        data = request.json
+        pergunta = data.get('pergunta', '')
+        print(f"[LOG] Pergunta recebida: {pergunta}")
 
-    if not pergunta:
-        return jsonify({'erro': 'Nenhuma pergunta enviada'}), 400
+        if not pergunta:
+            print("[LOG] Nenhuma pergunta enviada.")
+            return jsonify({'erro': 'Nenhuma pergunta enviada'}), 400
 
-    resposta = gerar_resposta(pergunta)
-    return jsonify({'resposta': resposta})
+        resposta = gerar_resposta(pergunta)
+        print(f"[LOG] Resposta enviada: {resposta}")
+        return jsonify({'resposta': resposta})
+    except Exception as e:
+        print(f"[ERRO] Erro ao processar a pergunta: {str(e)}")
+        return jsonify({'erro': f'Erro ao processar a pergunta: {str(e)}'}), 500
 
 
 if __name__ == '__main__':

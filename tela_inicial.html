@@ -323,8 +323,10 @@
       nav.removeEventListener("mousemove", onDrag);
     });
 
+
     function sendMessage() {
       const text = userInput.value.trim();
+      const sendBtn = document.querySelector('.input-container button');
       if (text !== "") {
         const messageElement = document.createElement("div");
         messageElement.classList.add("message", "user-message");
@@ -332,8 +334,9 @@
         chatContainer.appendChild(messageElement);
         chatContainer.scrollTop = chatContainer.scrollHeight;
 
-        logo.classList.add("small"); 
-        userInput.value = "";
+        logo.classList.add("small");
+        userInput.disabled = true;
+        sendBtn.disabled = true;
 
         // 🔹 Chamar o backend Flask
         fetch("http://127.0.0.1:5000/perguntar", {
@@ -345,15 +348,21 @@
         .then(data => {
           const botMessageElement = document.createElement("div");
           botMessageElement.classList.add("message", "bot-message");
-          botMessageElement.textContent = data.resposta;
+          botMessageElement.textContent = data.resposta || data.erro || "⚠️ Erro inesperado.";
           chatContainer.appendChild(botMessageElement);
           chatContainer.scrollTop = chatContainer.scrollHeight;
+          userInput.value = "";
         })
         .catch(err => {
           const botMessageElement = document.createElement("div");
           botMessageElement.classList.add("message", "bot-message");
           botMessageElement.textContent = "⚠️ Erro ao conectar com o servidor.";
           chatContainer.appendChild(botMessageElement);
+        })
+        .finally(() => {
+          userInput.disabled = false;
+          sendBtn.disabled = false;
+          userInput.focus();
         });
       }
     }

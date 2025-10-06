@@ -1,0 +1,13 @@
+pydantic==2.11.0
+pydantic-core==2.33.0
+openai==1.43.0
+langchain-openai==0.1.21
+numpy
+Flask
+python-dotenv
+tiktoken==0.11.0
+chroma-db
+requests
+requests-toolbelt
+httpx
+anyio
