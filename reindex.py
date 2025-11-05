@@ -24,7 +24,29 @@ def _read_respostas_from_file(path: str):
     with open(path, encoding="utf-8") as f:
         conteudo_txt = f.read()
 
-    respostas = [resp.strip() for resp in conteudo_txt.split("\n\n") if resp.strip()]
+    # Cria blocos separados por linha em branco dupla (parágrafos)
+    blocos = [b.strip() for b in conteudo_txt.split("\n\n") if b.strip()]
+
+    # Além disso, indexaremos cada linha não-vazia como documento separado
+    linhas = [l.strip() for l in conteudo_txt.splitlines() if l.strip()]
+
+    # Evita duplicatas: usa ordem preservada
+    seen = set()
+    respostas = []
+
+    # Primeiro adiciona blocos completos
+    for b in blocos:
+        key = b
+        if key not in seen:
+            respostas.append(b)
+            seen.add(key)
+
+    # Depois adiciona cada linha individual (útil quando cada resposta está em uma linha única)
+    for l in linhas:
+        if l not in seen:
+            respostas.append(l)
+            seen.add(l)
+
     return respostas
 
 
