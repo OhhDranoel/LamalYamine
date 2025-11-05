@@ -1,19 +1,9 @@
-1 - Qual o tempo médio de duração do curso de Desenvolvimento de Sistemas?
-
 O tempo de duração do curso oscila entre 3 e 4 anos.
-
-2 - Quais os cursos disponíveis em Desenvolvimento de Sistemas?
 
 Análise e projeto de sistemas, banco de dados, programação back-end, programação mobile, programação no desenvolvimento de sistemas, ciência de dados e computação gráfica.
 
-3 - Qual a matéria com a maior grade curricular?
-
 A matéria com a maior grade curricular é matemática.
 
-4 - Os professores são qualificados?
-
 Sem dúvidas, todos os professores possuem formação acadêmica considerável e estão sempre dispostos a ajudar os alunos.
-
-5 - Quem descobriu o Brasil?
 
 Pedro Álvares Cabral
