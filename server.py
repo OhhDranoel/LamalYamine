@@ -5,6 +5,8 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
+import threading
+import reindex
 
 # 🔹 Carregar variáveis de ambiente (.env)
 load_dotenv()
@@ -15,6 +17,24 @@ CAMINHO_DB = "db"
 # 🔹 Inicializar Flask
 app = Flask(__name__)
 CORS(app)
+
+# 🔹 Iniciar reindexação inicial e watcher em background
+def _start_reindex_watcher():
+    try:
+        # Reindexa uma vez na inicialização para garantir que o DB exista/esteja atualizado
+        print("[server] Executando reindexação inicial...")
+        reindex.reindex()
+
+        # Inicia thread daemon que observa alterações no arquivo de respostas
+        watcher = threading.Thread(target=reindex.watch_file, args=(reindex.ARQUIVO_TXT, reindex.CAMINHO_DB, 2.0), daemon=True)
+        watcher.start()
+        print("[server] Watcher de reindexação iniciado.")
+    except Exception as e:
+        print(f"[server][ERRO] Não foi possível iniciar o watcher de reindex: {e}")
+
+
+# Start watcher when module is imported/run
+_start_reindex_watcher()
 
 # 🔹 Respostas fixas (não dependem dos documentos)
 respostas_predefinidas = {
@@ -119,6 +139,21 @@ def perguntar():
     except Exception as e:
         print(f"[ERRO] Erro ao processar a pergunta: {str(e)}")
         return jsonify({'erro': f'Erro ao processar a pergunta: {str(e)}'}), 500
+
+
+@app.route('/reindex', methods=['POST'])
+def trigger_reindex():
+    """Rota para forçar reindexação manual (útil para depuração)."""
+    try:
+        print("[server] Requisição HTTP: reindex -> iniciando reindexação...")
+        ok = reindex.reindex()
+        if ok:
+            return jsonify({'status': 'ok', 'mensagem': 'Reindexação concluída.'})
+        else:
+            return jsonify({'status': 'error', 'mensagem': 'Falha ao reindexar. Veja logs no servidor.'}), 500
+    except Exception as e:
+        print(f"[server][ERRO] Exceção em /reindex: {e}")
+        return jsonify({'status': 'error', 'mensagem': str(e)}), 500
 
 
 if __name__ == '__main__':
