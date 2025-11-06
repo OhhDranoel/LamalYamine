@@ -108,10 +108,14 @@ def gerar_resposta(pergunta: str) -> str:
     prompt = ChatPromptTemplate.from_template(prompt_template)
     prompt_text = prompt.invoke({"pergunta": pergunta, "base_conhecimento": base_conhecimento})
 
-    # 6️⃣ Chamar modelo da OpenAI
-    modelo = ChatOpenAI()
-    resposta = modelo.invoke(prompt_text).content
-    return resposta
+    # 6️⃣ Chamar modelo da OpenAI com timeout e tratamento de erros
+    try:
+        modelo = ChatOpenAI(timeout=30)  # Define timeout de 30 segundos
+        resposta = modelo.invoke(prompt_text).content
+        return resposta
+    except Exception as e:
+        print(f"[ERRO] Falha na comunicação com OpenAI: {str(e)}")
+        return "Desculpe, estou tendo problemas de conexão no momento. Por favor, tente novamente em alguns instantes."
 
 
 # 🔹 Rota de teste
@@ -122,7 +126,6 @@ def home():
 
 # 🔹 Rota para perguntas (usada pelo frontend)
 @app.route('/perguntar', methods=['POST'])
-
 def perguntar():
     try:
         data = request.json
@@ -133,12 +136,27 @@ def perguntar():
             print("[LOG] Nenhuma pergunta enviada.")
             return jsonify({'erro': 'Nenhuma pergunta enviada'}), 400
 
+        # Aumentar o timeout da requisição para 60 segundos
         resposta = gerar_resposta(pergunta)
         print(f"[LOG] Resposta enviada: {resposta}")
-        return jsonify({'resposta': resposta})
+        return jsonify({
+            'status': 'sucesso',
+            'resposta': resposta
+        })
     except Exception as e:
-        print(f"[ERRO] Erro ao processar a pergunta: {str(e)}")
-        return jsonify({'erro': f'Erro ao processar a pergunta: {str(e)}'}), 500
+        erro_msg = str(e)
+        print(f"[ERRO] Erro ao processar a pergunta: {erro_msg}")
+        
+        if "connect" in erro_msg.lower():
+            mensagem = "Problema de conexão com o servidor. Por favor, verifique sua internet e tente novamente."
+        else:
+            mensagem = "Ocorreu um erro ao processar sua pergunta. Por favor, tente novamente em alguns instantes."
+            
+        return jsonify({
+            'status': 'erro',
+            'mensagem': mensagem,
+            'erro': erro_msg
+        }), 500
 
 
 @app.route('/reindex', methods=['POST'])
