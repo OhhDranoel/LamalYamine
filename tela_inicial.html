@@ -170,6 +170,166 @@
       cursor: pointer;
     }
 
+    .content-button-container {
+      position: relative;
+      margin-right: 10px; /* Espaço entre o novo botão e o input */
+    }
+
+    .content-button {
+      background: #F22771; /* Cor de destaque */
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: background 0.3s ease;
+    }
+
+    .content-button:hover {
+      background: #D41D60;
+    }
+
+    .content-menu {
+      position: absolute;
+      bottom: 100%; /* Aparece acima do botão */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 100;
+      min-width: 180px;
+      padding: 8px 0;
+      display: none; /* Escondido por padrão */
+    }
+
+    .content-menu.show {
+      display: block;
+    }
+
+    .content-menu-option {
+      padding: 10px 15px;
+      cursor: pointer;
+      color: #333;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .content-menu-option:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Estilos para o modal de notas */
+    .note-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 2000; /* Acima de outros modais */
+      justify-content: center;
+      align-items: center;
+    }
+
+    .note-modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .note-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .note-modal-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .note-modal-close {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .note-textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: none;
+      outline: none;
+    }
+
+    .note-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .note-modal-save {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .note-modal-save:hover {
+      background: #333;
+    }
+
+    /* Ajuste para o input-container para acomodar o novo botão */
+    .input-container {
+      position: absolute;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .input-container input {
+      width: 300px;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 25px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .input-container button {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
     /* Estilos para o modal de seleção de cores */
     .color-modal {
       display: none;
@@ -236,6 +396,49 @@
       font-size: 1.5rem;
       cursor: pointer;
     }
+
+    /* Toast de confirmação */
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 3000;
+      font-size: 14px;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toast-in 0.25s ease;
+    }
+
+    @keyframes toast-in {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Loader pequeño para botão salvar */
+    .loader-inline {
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   </style>
   <nav>
     <div class="nav-content">
@@ -254,8 +457,34 @@
   <div class="chat-container" id="chatContainer"></div>
 
   <div class="input-container">
+    <div class="content-button-container">
+      <button class="content-button" id="contentButton">+ Conteúdo</button>
+      <div class="content-menu" id="contentMenu">
+        <div class="content-menu-option" id="addTextOption">
+          <box-icon name="text"></box-icon> Adicionar Texto
+        </div>
+        <div class="content-menu-option" id="addFileOption">
+          <box-icon name="file"></box-icon> Adicionar Arquivo
+        </div>
+      </div>
+    </div>
     <input type="text" id="userInput" placeholder="Pergunte algo..." />
     <button onclick="sendMessage()">Enviar</button>
+    <input type="file" id="fileInput" style="display: none;" /> <!-- Input de arquivo escondido -->
+  </div>
+
+  <!-- Modal de notas suspensas -->
+  <div class="note-modal" id="noteModal">
+    <div class="note-modal-content">
+      <div class="note-modal-header">
+        <div class="note-modal-title">Adicionar Nota</div>
+        <button class="note-modal-close" id="closeNoteModal">&times;</button>
+      </div>
+      <textarea class="note-textarea" id="noteTextarea" placeholder="Digite sua nota aqui..."></textarea>
+      <div class="note-modal-footer">
+        <button class="note-modal-save" id="saveNoteButton">Salvar e Enviar</button>
+      </div>
+    </div>
   </div>
 
   <!-- Modal de seleção de cores -->
@@ -293,10 +522,127 @@
           colorPicker = document.getElementById("colorPicker"),
           colorModal = document.getElementById("colorModal"),
           closeModal = document.getElementById("closeModal"),
-          colorOptions = document.querySelectorAll(".color-option");
+          colorOptions = document.querySelectorAll(".color-option"),
+          contentButton = document.getElementById("contentButton"),
+          contentMenu = document.getElementById("contentMenu"),
+          addTextOption = document.getElementById("addTextOption"),
+          addFileOption = document.getElementById("addFileOption"),
+          fileInput = document.getElementById("fileInput"),
+          noteModal = document.getElementById("noteModal"),
+          closeNoteModal = document.getElementById("closeNoteModal"),
+          noteTextarea = document.getElementById("noteTextarea"),
+          saveNoteButton = document.getElementById("saveNoteButton");
 
     toggleBtn.addEventListener("click", () => {
       nav.classList.toggle("open");
+    });
+
+    // 🔹 Lógica do botão "+ Conteúdo"
+    contentButton.addEventListener("click", (e) => {
+      e.stopPropagation(); // Impede que o clique feche o menu imediatamente
+      contentMenu.classList.toggle("show");
+    });
+
+    // Fechar o menu ao clicar fora
+    document.addEventListener("click", (e) => {
+      if (!contentButton.contains(e.target) && !contentMenu.contains(e.target)) {
+        contentMenu.classList.remove("show");
+      }
+    });
+
+    // Opção "Adicionar Texto"
+    addTextOption.addEventListener("click", () => {
+      contentMenu.classList.remove("show");
+      noteModal.style.display = "flex";
+      noteTextarea.value = ""; // Limpa o campo
+      noteTextarea.focus();
+    });
+
+    // Opção "Adicionar Arquivo"
+    addFileOption.addEventListener("click", () => {
+      contentMenu.classList.remove("show");
+      fileInput.click(); // Simula o clique no input de arquivo escondido
+    });
+
+    // 🔹 Lógica do Modal de Notas
+    closeNoteModal.addEventListener("click", () => {
+      noteModal.style.display = "none";
+    });
+
+    noteModal.addEventListener("click", (e) => {
+      if (e.target === noteModal) {
+        noteModal.style.display = "none";
+      }
+    });
+
+    saveNoteButton.addEventListener("click", () => {
+      const noteText = noteTextarea.value.trim();
+      if (!noteText) {
+        showToast('A nota não pode estar vazia.', true);
+        return;
+      }
+
+      // Feedback: desabilita botão e mostra loader
+      saveNoteButton.disabled = true;
+      const originalText = saveNoteButton.textContent;
+      saveNoteButton.innerHTML = '<span class="loader-inline"></span> Salvando...';
+
+      fetch("http://127.0.0.1:5000/adicionar_texto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto: noteText })
+      })
+      .then(async res => {
+        let data;
+        try { data = await res.json(); } catch(e) { data = null; }
+        if (res.ok && data && data.status === 'sucesso') {
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message", "user-message");
+          messageElement.textContent = `[NOTA SALVA]\n${noteText}`;
+          chatContainer.appendChild(messageElement);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+          noteModal.style.display = "none";
+          noteTextarea.value = "";
+          showToast('Nota salva com sucesso.');
+        } else {
+          const errMsg = (data && data.mensagem) ? data.mensagem : (data ? JSON.stringify(data) : 'Resposta inválida do servidor');
+          showToast('Erro ao salvar nota: ' + errMsg, true);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        showToast('Erro ao conectar com o servidor ao salvar a nota.', true);
+      })
+      .finally(() => {
+        saveNoteButton.disabled = false;
+        saveNoteButton.textContent = originalText;
+      });
+    });
+
+    // Toast helper
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+
+    function showToast(message, isError = false, timeout = 3500) {
+      toast.textContent = message;
+      toast.style.background = isError ? 'rgba(180,40,40,0.95)' : 'rgba(0,0,0,0.85)';
+      toast.classList.add('show');
+      clearTimeout(toast._hideTimer);
+      toast._hideTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, timeout);
+    }
+
+    // 🔹 Lógica para lidar com o arquivo selecionado
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        // Simula o envio do arquivo como uma mensagem
+        userInput.value = `[ARQUIVO ANEXADO] ${fileName}`;
+        sendMessage();
+        fileInput.value = ''; // Limpa o input para permitir o upload do mesmo arquivo novamente
+      }
     });
 
     function onDrag({ movementY }) {
@@ -326,6 +672,7 @@
 
     function sendMessage() {
       const text = userInput.value.trim();
+      const isNoteOrFile = text.startsWith('[NOTA ADICIONADA]') || text.startsWith('[ARQUIVO ANEXADO]');
       const sendBtn = document.querySelector('.input-container button');
       if (text !== "") {
         const messageElement = document.createElement("div");
@@ -339,6 +686,20 @@
         sendBtn.disabled = true;
 
         // 🔹 Chamar o backend Flask
+        // Se for nota ou arquivo, não chama o backend, apenas exibe a mensagem
+        if (isNoteOrFile) {
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message", "user-message");
+          messageElement.textContent = text;
+          chatContainer.appendChild(messageElement);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+          userInput.value = "";
+          userInput.disabled = false;
+          sendBtn.disabled = false;
+          userInput.focus();
+          return;
+        }
+
         fetch("http://127.0.0.1:5000/perguntar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -348,7 +709,7 @@
         .then(data => {
           const botMessageElement = document.createElement("div");
           botMessageElement.classList.add("message", "bot-message");
-          botMessageElement.textContent = data.resposta || data.erro || "⚠️ Erro inesperado.";
+          botMessageElement.textContent = data.resposta || data.mensagem || "Erro ao receber resposta.";
           chatContainer.appendChild(botMessageElement);
           chatContainer.scrollTop = chatContainer.scrollHeight;
           userInput.value = "";

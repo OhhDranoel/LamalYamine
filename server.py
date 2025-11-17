@@ -1,5 +1,6 @@
 # server.py
 from flask import Flask, request, jsonify
+import os
 from flask_cors import CORS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma.vectorstores import Chroma
@@ -13,6 +14,9 @@ load_dotenv()
 
 # Caminho do banco vetorial (criado com criar_db.py)
 CAMINHO_DB = "db"
+# Caminho absoluto para garantir que o arquivo alvo seja sempre dentro do projeto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TESTE_NOTAS_ABS = os.path.join(BASE_DIR, "base", "Teste Notas.txt")
 
 # 🔹 Inicializar Flask
 app = Flask(__name__)
@@ -172,6 +176,38 @@ def trigger_reindex():
     except Exception as e:
         print(f"[server][ERRO] Exceção em /reindex: {e}")
         return jsonify({'status': 'error', 'mensagem': str(e)}), 500
+
+
+@app.route('/adicionar_texto', methods=['POST'])
+def adicionar_texto():
+    """Recebe JSON { texto: "..." } e anexa ao arquivo base/Teste Notas.txt.
+    Retorna JSON com status.
+    """
+    try:
+        data = request.get_json(force=True)
+        texto = data.get('texto', '') if isinstance(data, dict) else ''
+        if not texto or not texto.strip():
+            return jsonify({'status': 'erro', 'mensagem': 'Texto vazio'}), 400
+
+        # Limite razoável para evitar abusos
+        if len(texto) > 20000:
+            return jsonify({'status': 'erro', 'mensagem': 'Texto muito grande'}), 400
+
+        # Garante que a pasta base exista (caminho absoluto)
+        pasta_base = os.path.dirname(TESTE_NOTAS_ABS)
+        if pasta_base and not os.path.exists(pasta_base):
+            os.makedirs(pasta_base, exist_ok=True)
+
+        # Anexa o texto ao arquivo com quebra de linha (usar caminho absoluto)
+        with open(TESTE_NOTAS_ABS, 'a', encoding='utf-8', newline='') as f:
+            f.write(texto)
+            f.write('\n')
+
+        print(f"[server] Texto adicionado a {TESTE_NOTAS_ABS}")
+        return jsonify({'status': 'sucesso', 'mensagem': 'Texto salvo.'})
+    except Exception as e:
+        print(f"[server][ERRO] Falha ao salvar texto: {e}")
+        return jsonify({'status': 'erro', 'mensagem': str(e)}), 500
 
 
 if __name__ == '__main__':
