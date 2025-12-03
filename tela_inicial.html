@@ -5,447 +5,469 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/dist/boxicons.min.js"></script>
-  <link rel="stylesheet" href="menu.css">
+  <style>
+/* menu.css - Novo estilo para tela_inicial.html */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --bg-dark: #1a1a1a;
+    --bg-medium: #2b2b2b;
+    --accent-pink: #F22771;
+    --accent-yellow: #F2E52E;
+    --text-light: #e0e0e0;
+    --text-dark: #1a1a1a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: var(--bg-dark);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--text-light);
+    position: relative; /* Para o fundo animado */
+}
+
+/* ------------------------------------------------------------------- */
+/* NOVO FUNDO ANIMADO COM PROFUNDIDADE E HARMONIA (Inspirado no CRT/Cyberpunk) */
+/* ------------------------------------------------------------------- */
+
+/* Camada de Fundo 1: Gradiente Sutil e Profundidade */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(242, 39, 113, 0.05) 0%, rgba(26, 26, 26, 1) 70%);
+    z-index: -2;
+}
+
+/* Camada de Fundo 2: Animação de Scanlines (Efeito CRT) */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 1px,
+        rgba(255, 255, 255, 0.02) 1px,
+        rgba(255, 255, 255, 0.02) 3px
+    );
+    animation: scan-move 15s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes scan-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100vh; }
+}
+
+/* Animação de Brilho Sutil (Harmonia de Cores) */
+@keyframes subtle-glow {
+    0% { box-shadow: 0 0 5px rgba(242, 39, 113, 0.3); }
+    50% { box-shadow: 0 0 10px rgba(242, 39, 113, 0.5); }
+    100% { box-shadow: 0 0 5px rgba(242, 39, 113, 0.3); }
+}
+
+/* ------------------------------------------------------------------- */
+/* ELEMENTOS DA TELA INICIAL HARMONIZADOS */
+/* ------------------------------------------------------------------- */
+
+nav {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 80px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+}
+
+nav .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(4995deg);
+    background-color: var(--accent-pink);
+    transition: background-color 0.3s ease;
+}
+
+.nav-content .toggle-btn,
+.nav-content span a {
+    height: 60px;
+    width: 60px;
+    background: var(--accent-pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+    animation: subtle-glow 3s infinite alternate; /* Aplica o brilho sutil */
+}
+
+.nav-content .toggle-btn {
+    font-size: 35px;
+    color: #fff;
+    z-index: 100;
+    cursor: pointer;
+    transform: rotate(500deg);
+    transition: all 0.6s ease;
+}
+
+nav.open .toggle-btn {
+    transform: rotate(45deg);
+}
+
+.nav-content span {
+    position: absolute;
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+nav.open .nav-content span {
+    transform: rotate(calc(var(--i) * (360deg / 8))) translateX(-120px);
+    opacity: 1;
+}
+
+.nav-content span a {
+    transform: rotate(calc(-1 * var(--i) * (360deg / 8)));
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-family: 'Press Start 2P', cursive;
+    color: #FFFFFF;
+    /* Mantém o efeito de brilho original que usa as cores de destaque */
+    text-shadow: 3px 3px 0 var(--accent-yellow), 0 0 10px var(--accent-pink), 0 0 20px var(--accent-pink);
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    z-index: 10;
+}
+
+.logo.small {
+    font-size: 30px;
+    top: 5%; 
+    transform: translate(-50%, 0); 
+}
+
+.chat-container {
+    position: absolute;
+    bottom: 80px;
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    /* Estilo para harmonizar com o tema escuro */
+    background: rgba(0, 0, 0, 0.3); /* Fundo semi-transparente para profundidade */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(242, 39, 113, 0.2);
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra mais escura */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.user-message {
+    background: var(--accent-pink);
+    color: #fff;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.bot-message {
+    background: var(--bg-medium); /* Cor de fundo escura para a mensagem do bot */
+    color: var(--text-light);
+    align-self: flex-start;
+    text-align: left;
+}
+
+.input-container {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.input-container input {
+    width: 300px;
+    padding: 10px;
+    border: 2px solid var(--accent-pink); /* Borda com cor de destaque */
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.input-container button {
+    background: var(--accent-pink);
+    color: var(--accent-yellow); /* Texto com cor de destaque secundária */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.input-container button:hover {
+    background: #D41D60;
+}
+
+.content-button-container {
+    position: relative;
+    margin-right: 10px;
+}
+
+.content-button {
+    background: var(--accent-pink);
+    color: var(--accent-yellow);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: background 0.3s ease;
+}
+
+.content-button:hover {
+    background: #D41D60;
+}
+
+.content-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-medium); /* Fundo escuro */
+    border: 1px solid var(--accent-pink); /* Borda de destaque */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    min-width: 180px;
+    padding: 8px 0;
+    display: none;
+}
+
+.content-menu.show {
+    display: block;
+}
+
+.content-menu-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.content-menu-option:hover {
+    background-color: var(--bg-dark);
+}
+
+/* Estilos para o modal de notas */
+.note-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo mais escuro */
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.note-modal-content {
+    background-color: var(--bg-medium); /* Fundo escuro */
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 25px rgba(242, 39, 113, 0.3); /* Sombra de destaque */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note-modal-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-pink); /* Título com cor de destaque */
+}
+
+.note-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.note-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid var(--accent-pink);
+    border-radius: 8px;
+    font-size: 16px;
+    resize: none;
+    outline: none;
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.note-modal-save {
+    background: var(--accent-pink);
+    color: var(--accent-yellow);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.note-modal-save:hover {
+    background: #D41D60;
+}
+
+/* Estilos para o modal de seleção de cores */
+.color-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.color-modal-content {
+    background-color: var(--bg-medium);
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(242, 39, 113, 0.3);
+}
+
+.color-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.color-option {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 0.2); /* Borda sutil para visibilidade em fundo escuro */
+    transition: transform 0.2s, border-color 0.2s;
+    margin: 0 auto;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-pink); /* Destaca a cor no hover */
+}
+
+.color-option.selected {
+    border-color: var(--accent-yellow); /* Destaque com a cor secundária para seleção */
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-pink);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+
+
+/* Toast de confirmação */
+.toast {
+    background: rgba(26, 26, 26, 0.9); /* Fundo escuro */
+    color: var(--text-light);
+    border: 1px solid var(--accent-pink);
+}
+
+/* Loader */
+.loader-inline {
+    border: 2px solid rgba(242, 39, 113, 0.2);
+    border-top: 2px solid var(--accent-pink);
+}
+
+/* Animação de brilho no texto (do arquivo de cadastro) */
+@keyframes glow {
+    from {
+        text-shadow: 3px 3px 0 var(--accent-yellow), 0 0 10px var(--accent-pink), 0 0 20px var(--accent-pink);
+    }
+    to {
+        text-shadow: 3px 3px 0 var(--accent-yellow), 0 0 20px var(--accent-pink), 0 0 40px var(--accent-pink);
+    }
+}
+  </style>
 </head>
 <body>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
 
-    body {
-      height: 100vh;
-      background: #fcfcfc;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
 
-    nav {
-      position: absolute;
-      top: 20px;
-      left: 0;
-      width: 80px;
-      height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
-    }
-
-    nav .nav-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: rotate(4995deg);
-      background-color: #F22771;
-      transition: background-color 0.3s ease;
-    }
-
-    .nav-content .toggle-btn,
-    .nav-content span a {
-      height: 60px;
-      width: 60px;
-      background: #F22771;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-content .toggle-btn {
-      font-size: 35px;
-      color: #fff;
-      z-index: 100;
-      cursor: pointer;
-      transform: rotate(500deg);
-      transition: all 0.6s ease;
-    }
-
-    nav.open .toggle-btn {
-      transform: rotate(45deg);
-    }
-
-    .nav-content span {
-      position: absolute;
-      transition: all 0.6s ease;
-      opacity: 0;
-    }
-
-    nav.open .nav-content span {
-      transform: rotate(calc(var(--i) * (360deg / 8))) translateX(-120px);
-      opacity: 1;
-    }
-
-    .nav-content span a {
-      transform: rotate(calc(-1 * var(--i) * (360deg / 8)));
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-family: 'Press Start 2P', cursive;
-      color: #FFFFFF;
-      text-shadow: 3px 3px 0 #F2E52E, 0 0 10px #F22771, 0 0 20px #F22771;
-      transition: color 0.3s ease;
-      position: absolute;
-      top: 50%; 
-      left: 50%; 
-      transform: translate(-50%, -50%); 
-    }
-
-    .logo.small {
-      font-size: 30px;
-      top: 5%; 
-      transform: translate(-50%, 0); 
-    }
-
-    .chat-container {
-      position: absolute;
-      bottom: 80px;
-      width: 90%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .message {
-      max-width: 80%;
-      padding: 10px 15px;
-      border-radius: 15px;
-      word-wrap: break-word;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .user-message {
-      background: #F22771;
-      color: #fff;
-      align-self: flex-end;
-      text-align: right;
-    }
-
-    .bot-message {
-      background: #e0e0e0;
-      color: #000;
-      align-self: flex-start;
-      text-align: left;
-    }
-
-    .input-container {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .input-container input {
-      width: 300px;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 25px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .input-container button {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    .content-button-container {
-      position: relative;
-      margin-right: 10px; /* Espaço entre o novo botão e o input */
-    }
-
-    .content-button {
-      background: #F22771; /* Cor de destaque */
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      white-space: nowrap;
-      transition: background 0.3s ease;
-    }
-
-    .content-button:hover {
-      background: #D41D60;
-    }
-
-    .content-menu {
-      position: absolute;
-      bottom: 100%; /* Aparece acima do botão */
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 100;
-      min-width: 180px;
-      padding: 8px 0;
-      display: none; /* Escondido por padrão */
-    }
-
-    .content-menu.show {
-      display: block;
-    }
-
-    .content-menu-option {
-      padding: 10px 15px;
-      cursor: pointer;
-      color: #333;
-      transition: background-color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .content-menu-option:hover {
-      background-color: #f0f0f0;
-    }
-
-    /* Estilos para o modal de notas */
-    .note-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 2000; /* Acima de outros modais */
-      justify-content: center;
-      align-items: center;
-    }
-
-    .note-modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .note-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .note-modal-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .note-modal-close {
-      background: none;
-      border: none;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: #888;
-    }
-
-    .note-textarea {
-      width: 100%;
-      height: 150px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: none;
-      outline: none;
-    }
-
-    .note-modal-footer {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .note-modal-save {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-
-    .note-modal-save:hover {
-      background: #333;
-    }
-
-    /* Ajuste para o input-container para acomodar o novo botão */
-    .input-container {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .input-container input {
-      width: 300px;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 25px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .input-container button {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    /* Estilos para o modal de seleção de cores */
-    .color-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .color-modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 350px;
-      max-width: 90%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .color-options {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .color-option {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: transform 0.2s, border-color 0.2s;
-      margin: 0 auto;
-    }
-
-    .color-option:hover {
-      transform: scale(1.1);
-    }
-
-    .color-option.selected {
-      border-color: #000;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .modal-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* Toast de confirmação */
-    .toast {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      display: none;
-      z-index: 3000;
-      font-size: 14px;
-    }
-
-    .toast.show {
-      display: block;
-      animation: toast-in 0.25s ease;
-    }
-
-    @keyframes toast-in {
-      from { transform: translateY(10px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Loader pequeño para botão salvar */
-    .loader-inline {
-      border: 2px solid rgba(255,255,255,0.2);
-      border-top: 2px solid #fff;
-      border-radius: 50%;
-      width: 14px;
-      height: 14px;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 8px;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  </style>
   <nav>
     <div class="nav-content">
       <div class="toggle-btn">
         <box-icon name="plus"></box-icon>
       </div>
-      <span style="--i:3;"><a href="#"><box-icon name="user"></box-icon></a></span>
+      <span style="--i:3;"><a href="Banco de Dados/cadastro_final_page.html"><box-icon name="user"></box-icon></a></span>
       <span style="--i:4;"><a href="#"><box-icon name="map"></box-icon></a></span>
       <span style="--i:5;"><a href="configuracoes.html"><box-icon name="cog"></box-icon></a></span>
       <span style="--i:6;"><a href="#" id="colorPicker"><box-icon name="palette"></box-icon></a></span>
