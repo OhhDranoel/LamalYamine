@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.K.I.R.A - Configurações</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #1a1a1a; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Quarto */
+        .room {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to top, #2b2b2b, #1a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Luz */
+        .ambient-light {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02), transparent 70%);
+            animation: light-flicker 5s infinite alternate;
+        }
+
+        @keyframes light-flicker {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Tela de Configurações */
+        .config-screen {
+            position: absolute;
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            text-align: center;
+            width: 420px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 2;
+            border: 2px solid #F22771;
+        }
+
+        .config-screen h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #F22771;
+            text-shadow: 2px 2px 0 #F2E52E, 0 0 10px #F22771, 0 0 20px #F22771;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #F22771;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h3 {
+            color: #F2E52E;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #F2E52E;
+        }
+
+        .config-screen button {
+            background: #F22771;
+            color: #F2E52E;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .config-screen button:hover {
+            background: #F2E52E;
+            color: #F22771;
+        }
+
+        .btn-home {
+            background: #F2E52E;
+            color: #F22771;
+        }
+
+        .btn-home:hover {
+            background: #F22771;
+            color: #F2E52E;
+        }
+
+        .btn-delete {
+            background: #FF4444;
+            color: #F2E52E;
+        }
+
+        .btn-delete:hover {
+            background: #FF6666;
+            color: #F22771;
+        }
+
+        .response-message {
+            color: #F2E52E;
+            margin-bottom: 15px;
+            min-height: 20px;
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .response-message.error {
+            color: #F22771;
+            background: rgba(242, 39, 113, 0.1);
+        }
+
+        .response-message.success {
+            color: #F2E52E;
+            background: rgba(242, 226, 46, 0.1);
+        }
+
+        /* Scrollbar customizado */
+        .config-screen::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .config-screen::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .config-screen::-webkit-scrollbar-thumb {
+            background: #F22771;
+            border-radius: 4px;
+        }
+
+        .config-screen::-webkit-scrollbar-thumb:hover {
+            background: #F2E52E;
+        }
+
+        /* Transições suaves entre telas */
+        .page-fade-out {
+            animation: page-fade-out 0.38s ease forwards;
+        }
+
+        @keyframes page-fade-out {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(8px) scale(0.995); }
+        }
+    </style>
+</head>
+<body>
+    <div class="room" id="room">
+        <div class="ambient-light"></div>
+        
+        <!-- Tela de Configurações -->
+        <div class="config-screen" id="configScreen">
+            <h2>Configurações</h2>
+            <div id="responseMessage" class="response-message"></div>
+
+            <!-- Linguagem -->
+            <div class="section">
+                <h3>Idioma</h3>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">Português</button>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">English</button>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">Español</button>
+            </div>
+
+            <!-- Tema -->
+            <div class="section">
+                <h3>Tema</h3>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">Modo Claro</button>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">Modo Escuro</button>
+                <button onclick="mostrarMensagem('Recurso em desenvolvimento', 'error')">Modo Personalizado</button>
+            </div>
+
+            <!-- Ações -->
+            <div class="section">
+                <h3>Ações</h3>
+                <button class="btn-home" onclick="voltarTelaInicial()">Voltar à Tela Principal</button>
+                <button class="btn-home" onclick="irGerenciamentoConta()" style="margin-top:8px;">Gerenciar Conta</button>
+                <button class="btn-delete" onclick="abrirConfirmacaoExcluir()" style="margin-top:8px;">Deletar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="confirmation-modal" id="confirmationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:3000; justify-content:center; align-items:center;">
+        <div style="background:#1a1a1a; border:3px solid #FF4444; border-radius:8px; padding:30px; max-width:400px; text-align:center; box-shadow:0 0 30px rgba(255,68,68,0.5);">
+            <h3 style="font-family:'Press Start 2P',cursive; color:#FF4444; font-size:1rem; margin-bottom:20px; text-shadow:0 0 10px #FF4444;">⚠️ AVISO</h3>
+            <p style="color:#F2E52E; font-size:0.7rem; margin-bottom:25px; line-height:1.6;">Tem certeza que deseja deletar sua conta? Esta ação é irreversível!</p>
+            <div style="display:flex; gap:15px; justify-content:center;">
+                <button onclick="cancelarExclusao()" style="padding:10px 25px; border:2px solid #F2E52E; background:#1a1a1a; color:#F2E52E; font-family:'Press Start 2P',cursive; font-size:0.6rem; cursor:pointer; border-radius:5px;">Não</button>
+                <button onclick="confirmarExclusaoConta()" style="padding:10px 25px; border:2px solid #FF4444; background:#FF4444; color:#1a1a1a; font-family:'Press Start 2P',cursive; font-size:0.6rem; cursor:pointer; border-radius:5px;">Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let usuarioAtual = '';
+
+        // Obter dados do usuário do localStorage (opcional - se existir)
+        function obterDadosUsuario() {
+            const usuarioLogado = localStorage.getItem('usuarioLogado');
+            
+            if (usuarioLogado) {
+                try {
+                    const dados = JSON.parse(usuarioLogado);
+                    usuarioAtual = dados.usuario || '';
+                } catch (e) {
+                    usuarioAtual = '';
+                }
+            }
+            // Se não estiver logado, continua normalmente (apenas com usuarioAtual vazio)
+        }
+
+        // Mostrar mensagem de resposta
+        function mostrarMensagem(texto, tipo = 'error') {
+            const messageDiv = document.getElementById('responseMessage');
+            messageDiv.textContent = texto;
+            messageDiv.className = 'response-message ' + tipo;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = 'response-message';
+            }, 4000);
+        }
+
+        // Navegação com animação de fade
+        function navigateWithFade(url) {
+            const room = document.getElementById('room');
+            room.classList.add('page-fade-out');
+            setTimeout(() => { window.location.href = url; }, 380);
+        }
+
+        // Voltar para Tela Principal
+        function voltarTelaInicial() {
+            navigateWithFade('../tela_inicial.html');
+        }
+
+        // Ir para Gerenciamento de Conta
+        function irGerenciamentoConta() {
+            if (!usuarioAtual) {
+                mostrarMensagem('Usuário não vinculado', 'error');
+                return;
+            }
+            navigateWithFade('../Condicionais de Conta/gerenciamento_conta.html');
+        }
+
+        // Excluir Conta
+        function abrirConfirmacaoExcluir() {
+            if (!usuarioAtual) {
+                mostrarMensagem('Usuário não vinculado', 'error');
+                return;
+            }
+            document.getElementById('confirmationModal').style.display = 'flex';
+        }
+
+        function cancelarExclusao() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        function confirmarExclusaoConta() {
+            const formData = new FormData();
+            formData.append('usuario', usuarioAtual);
+            formData.append('acao', 'excluir_conta');
+
+            fetch('../Condicionais de Conta/gerenciamento_conta.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data && data.success) {
+                        mostrarMensagem('Conta excluída com sucesso! Redirecionando...', 'success');
+                        localStorage.removeItem('usuarioLogado');
+                        setTimeout(() => {
+                            navigateWithFade('../tela_inicial.html');
+                        }, 1600);
+                    } else {
+                        mostrarMensagem((data && data.message) ? data.message : 'Erro ao excluir conta', 'error');
+                        document.getElementById('confirmationModal').style.display = 'none';
+                    }
+                } catch (e) {
+                    const trimmed = text ? text.trim() : '';
+                    mostrarMensagem(trimmed || 'Erro ao excluir conta', 'error');
+                    document.getElementById('confirmationModal').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                mostrarMensagem('Erro ao excluir conta', 'error');
+                document.getElementById('confirmationModal').style.display = 'none';
+            });
+        }
+
+        // Inicializar ao carregar
+        window.addEventListener('load', obterDadosUsuario);
+    </script>
+</body>
+</html>

@@ -369,6 +369,16 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
+        /* Transições suaves entre telas */
+        .page-fade-out {
+            animation: page-fade-out 0.38s ease forwards;
+        }
+
+        @keyframes page-fade-out {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(8px) scale(0.995); }
+        }
     </style>
 </head>
 <body>
@@ -645,7 +655,7 @@
                         mostrarSucessoTela('Conta excluída', data.message || 'Conta excluída com sucesso!');
                         localStorage.removeItem('usuarioLogado');
                         setTimeout(() => {
-                            window.location.href = '../tela_inicial.html';
+                            navigateWithFade('../tela_inicial.html');
                         }, 1600);
                     } else {
                         mostrarMensagem((data && data.message) ? data.message : 'Erro ao excluir conta', 'error');
@@ -661,19 +671,26 @@
         }
 
         // Voltar para Tela Principal
+        function navigateWithFade(url) {
+            const room = document.getElementById('room');
+            room.classList.add('page-fade-out');
+            setTimeout(() => { window.location.href = url; }, 380);
+        }
+
+        // Voltar para Tela Principal
         function voltarTelaInicial() {
-            window.location.href = '../tela_inicial.html';
+            navigateWithFade('../tela_inicial.html');
         }
 
         // Mudar de Conta
         function mudarConta() {
             localStorage.removeItem('usuarioLogado');
-            window.location.href = '../Banco de Dados/login_final.html';
+            navigateWithFade('../Banco de Dados/login_final.html');
         }
 
         // Cadastrar Outra Conta
         function cadastrarOutra() {
-            window.location.href = '../Banco de Dados/cadastro_final_page.html';
+            navigateWithFade('../Banco de Dados/cadastro_final_page.html');
         }
 
         // Inicializar ao carregar

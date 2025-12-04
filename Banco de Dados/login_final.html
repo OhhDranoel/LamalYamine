@@ -263,6 +263,16 @@
             }
         }
 
+        /* Transições suaves entre telas */
+        .page-fade-out {
+            animation: page-fade-out 0.38s ease forwards;
+        }
+
+        @keyframes page-fade-out {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(8px) scale(0.995); }
+        }
+
         /* Zoom in */
         .zoom {
             transform: scale(10);
@@ -427,8 +437,8 @@
                 </div>
                 <button type="submit">Entrar</button>
             </form>
-            <button type="button" class="back-button" onclick="window.location.href='../tela_inicial.html'">Voltar à Tela Inicial</button>
-            <a href="login_bd/cadastro.html">Não tem conta? Cadastre-se</a>
+            <button type="button" class="back-button" onclick="navigateWithFade('../tela_inicial.html')">Voltar ao Menu Principal</button>
+            <a href="cadastro_final_page.html" onclick="navigateWithFade('cadastro_final_page.html'); return false;">Não tem conta? Cadastre-se</a>
         </div>
     </div>
 
@@ -460,6 +470,13 @@
             }
         }
 
+        // Navegação com animação de fade
+        function navigateWithFade(url) {
+            const room = document.getElementById('room');
+            room.classList.add('page-fade-out');
+            setTimeout(() => { window.location.href = url; }, 380);
+        }
+
         // Função para enviar formulário com AJAX
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -488,7 +505,9 @@
                         document.querySelector('.login-screen a').style.display = 'none';
                         
                         setTimeout(() => {
-                            window.location.href = '../tela_inicial.html';
+                            // aplicar fade e redirecionar
+                            document.getElementById('room').classList.add('page-fade-out');
+                            setTimeout(() => { window.location.href = '../tela_inicial.html'; }, 360);
                         }, 2000);
                     }
                 } catch (e) {

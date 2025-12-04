@@ -263,6 +263,16 @@
             }
         }
 
+        /* Transições suaves entre telas */
+        .page-fade-out {
+            animation: page-fade-out 0.38s ease forwards;
+        }
+
+        @keyframes page-fade-out {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(8px) scale(0.995); }
+        }
+
         /* Zoom in */
         .zoom {
             transform: scale(10);
@@ -447,7 +457,7 @@
 
     <button type="submit">Cadastrar</button>
 </form>
-        <button type="button" class="back-button" onclick="window.location.href='../tela_inicial.html'">Voltar à Tela Inicial</button>
+        <button type="button" class="back-button" onclick="navigateWithFade('../tela_inicial.html')">Voltar à Tela Inicial</button>
 
 <a href="login_final.html">Já tem conta? Fazer Login</a>
         </div>
@@ -481,6 +491,13 @@
             }
         }
 
+        // Navegação com animação de fade
+        function navigateWithFade(url) {
+            const room = document.getElementById('room');
+            room.classList.add('page-fade-out');
+            setTimeout(() => { window.location.href = url; }, 380);
+        }
+
         // Função para enviar formulário de cadastro com AJAX
         document.getElementById('cadastroForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -509,7 +526,9 @@
                     }));
                     
                     setTimeout(() => {
-                        window.location.href = '../tela_inicial.html';
+                        // aplicar fade e redirecionar
+                        document.getElementById('room').classList.add('page-fade-out');
+                        setTimeout(() => { window.location.href = '../tela_inicial.html'; }, 360);
                     }, 3000);
                 } else {
                     responseDiv.style.color = '#F22771';

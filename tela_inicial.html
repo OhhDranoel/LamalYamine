@@ -600,6 +600,16 @@
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
     }
+
+    /* Animação de fade para saída de página */
+    body.page-fade-out {
+        animation: page-fade-out 0.38s ease forwards;
+    }
+
+    @keyframes page-fade-out {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(8px) scale(0.995); }
+    }
   
     /* Estilo para a logo semi-transparente no fundo */
     body::before {
@@ -622,6 +632,282 @@
     body.color-scheme-preto::before {
         opacity: 0.15; /* Aumentar a opacidade para o tema escuro */
     }
+
+    /* Painel Lateral de Chats */
+    .chats-panel {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        background: var(--bg-color);
+        border-left: 2px solid var(--primary-color);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+        z-index: 50;
+        animation: slideInRight 0.3s ease;
+        overflow: hidden;
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+    }
+
+    .chats-panel-header {
+        padding: 20px;
+        border-bottom: 2px solid var(--primary-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+    }
+
+    .chats-panel-header h3 {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .close-chats-panel {
+        background: none;
+        border: none;
+        color: var(--chat-text-user);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .close-chats-panel:hover {
+        transform: rotate(90deg);
+    }
+
+    .new-chat-btn {
+        padding: 15px 20px;
+        background: var(--secondary-color);
+        color: var(--text-color);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        margin: 15px;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .new-chat-btn:hover {
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+    }
+
+    .chats-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .chats-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chats-list::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 3px;
+    }
+
+    .chats-list::-webkit-scrollbar-track {
+        background: var(--bg-color);
+    }
+
+    .chat-item {
+        padding: 12px 15px;
+        margin: 8px 0;
+        background: var(--secondary-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        border-left: 3px solid transparent;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .chat-item:hover {
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        transform: translateX(-5px);
+    }
+
+    .chat-item.active {
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        border-left-color: var(--chat-text-user);
+    }
+
+    .chat-item-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.9rem;
+    }
+
+    .chat-item-save {
+        background: none;
+        border: none;
+        color: rgba(255, 215, 0, 0.2);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: color 0.2s, transform 0.2s;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .chat-item-save:hover {
+        color: #FFD700;
+        transform: scale(1.2);
+    }
+
+    .chat-item-save.saved {
+        color: #FFD700;
+    }
+
+    .chat-item-delete {
+        background: #FF4444;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background 0.2s;
+    }
+
+    .chat-item-delete:hover {
+        background: #FF6666;
+    }
+
+    .empty-chats {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--text-color);
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 20px;
+        opacity: 0.6;
+    }
+
+    /* Overlay para fechar painel */
+    .overlay-chats {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 40;
+        display: none;
+        backdrop-filter: blur(2px);
+    }
+
+    .overlay-chats.show {
+        display: block;
+    }
+
+    /* Modal de Confirmação de Exclusão de Chat */
+    .delete-chat-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 3000;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(3px);
+    }
+
+    .delete-chat-modal.show {
+        display: flex;
+    }
+
+    .delete-chat-modal-content {
+        background: var(--bg-color);
+        padding: 40px;
+        border-radius: 15px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        border: 2px solid #FF4444;
+        animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+        from { transform: translateY(-30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .delete-chat-modal h3 {
+        color: #FF4444;
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        font-family: 'Press Start 2P', cursive;
+        text-shadow: 0 0 10px #FF4444;
+    }
+
+    .delete-chat-modal p {
+        color: var(--text-color);
+        margin-bottom: 30px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .delete-chat-modal-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .delete-chat-modal-btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.7rem;
+        transition: background 0.3s ease, transform 0.1s ease;
+    }
+
+    .delete-chat-modal-btn-cancel {
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+    }
+
+    .delete-chat-modal-btn-cancel:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+
+    .delete-chat-modal-btn-confirm {
+        background: #FF4444;
+        color: #FFFFFF;
+    }
+
+    .delete-chat-modal-btn-confirm:hover {
+        background: #FF6666;
+        transform: translateY(-2px);
+    }
     </style>
 </head>
 <body class="color-scheme-rosa">
@@ -633,11 +919,39 @@
       </div>
       <span style="--i:3;"><a href="#" onclick="abrirConta(event)"><box-icon name="user"></box-icon></a></span>
       <span style="--i:4;"><a href="#"><box-icon name="map"></box-icon></a></span>
-      <span style="--i:5;"><a href="configuracoes.html"><box-icon name="cog"></box-icon></a></span>
+      <span style="--i:5;"><a href="#" onclick="abrirConfigurações(event)"><box-icon name="cog"></box-icon></a></span>
       <span style="--i:6;"><a href="#" id="colorPicker"><box-icon name="palette"></box-icon></a></span>
-      <span style="--i:7;"><a href="#"><box-icon name="star"></box-icon></a></span>
+      <span style="--i:7;"><a href="#" onclick="abrirSalvos(event)"><box-icon name="star"></box-icon></a></span>
     </div>
   </nav>
+
+  <!-- Overlay para fechar painel de chats (sem onclick para impedir fechar ao clicar) -->
+  <div class="overlay-chats" id="overlayChats"></div>
+
+  <!-- Modal de Confirmação de Exclusão de Chat -->
+  <div class="delete-chat-modal" id="deleteChatModal">
+    <div class="delete-chat-modal-content">
+      <h3>⚠️ DELETAR CHAT</h3>
+      <p>Tem certeza que deseja deletar este chat? Esta ação não pode ser desfeita.</p>
+      <div class="delete-chat-modal-buttons">
+        <button class="delete-chat-modal-btn delete-chat-modal-btn-cancel" onclick="cancelDeleteChat()">Não</button>
+        <button class="delete-chat-modal-btn delete-chat-modal-btn-confirm" onclick="confirmDeleteChat()">Sim, Deletar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel Lateral de Chats -->
+  <div class="chats-panel" id="chatsPanel" style="display: none;">
+    <div class="chats-panel-header">
+      <h3>Meus Chats</h3>
+    </div>
+    <button class="new-chat-btn" onclick="createNewChat()">
+      <box-icon name="plus"></box-icon> Novo Chat
+    </button>
+    <div class="chats-list" id="chatsList">
+      <div class="empty-chats">Nenhum chat iniciado</div>
+    </div>
+  </div>
 
   <div class="logo">A.K.I.R.A</div>
   <div class="chat-container" id="chatContainer"></div>
@@ -703,6 +1017,12 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    // 🔹 DECLARAÇÕES GLOBAIS
+    let currentTheme = 'rosa'; // Default theme
+    let currentChatId = null;
+    let chatsData = {};
+    let isNavigatingBetweenPages = false; // Flag to distinguish between navigation and new session
+
     // 🔹 Sistema de cores atualizado para usar classes CSS
     function changeColors(color) {
       const body = document.body;
@@ -710,6 +1030,9 @@
       const navContent = document.querySelector(".nav-content");
       const userMessages = document.querySelectorAll(".user-message");
       const botMessages = document.querySelectorAll(".bot-message");
+
+      // Store current theme in global variable for persistence
+      currentTheme = color;
 
       // Remove todas as classes de esquema de cores existentes
       body.className = body.className.split(' ').filter(c => !c.startsWith('color-scheme-')).join(' ');
@@ -774,10 +1097,12 @@
     // Inicializa com a cor padrão (rosa)
     changeColors('rosa');
 
-    // Toggle do menu
+    // Toggle do menu com painel de chats
     toggleBtn.addEventListener("click", () => {
       nav.classList.toggle("open");
       logo.classList.toggle("small");
+      // Toggle do painel de chats quando clica no +
+      toggleChatsPanel();
     });
 
     // Lógica do modal de cores
@@ -970,6 +1295,11 @@
       const sendBtn = document.querySelector('.input-container button');
       
       if (text !== "") {
+        // Se não houver chat aberto, criar um novo
+        if (!currentChatId) {
+          createNewChat();
+        }
+
         // Adiciona a mensagem do usuário ao chat
         appendMessage(text, 'user');
 
@@ -1018,6 +1348,51 @@
       }
     });
 
+    // Função abrirConfigurações: abre configurações (sem autenticação obrigatória)
+    function abrirConfigurações(event) {
+      event.preventDefault();
+      navigateWithFade('Funcionalidades/configurações.html');
+    }
+
+    // Função abrirSalvos: abre a página de chats salvos
+    function abrirSalvos(event) {
+      event.preventDefault();
+      navigateWithFade('Funcionalidades/salvos.html');
+    }
+
+    // Função de navegação com fade
+    function navigateWithFade(url) {
+      // Set flag to indicate we're navigating between pages (not a new session)
+      isNavigatingBetweenPages = true;
+      sessionStorage.setItem('isNavigatingBetweenPages', 'true');
+      
+      // Save current theme and active chat before navigation
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (usuarioLogado) {
+        try {
+          const user = JSON.parse(usuarioLogado);
+          const username = user.usuario;
+          
+          // Save current theme
+          if (typeof currentTheme !== 'undefined') {
+            localStorage.setItem('currentTheme_' + username, currentTheme);
+          }
+          
+          // Save current active chat
+          if (typeof currentChatId !== 'undefined' && currentChatId) {
+            localStorage.setItem('activeChat_' + username, currentChatId);
+          }
+        } catch (e) {
+          console.error('Error saving state before navigation:', e);
+        }
+      }
+      
+      document.body.classList.add('page-fade-out');
+      setTimeout(() => {
+        window.location.href = url;
+      }, 380);
+    }
+
     // Função abrirConta: redireciona para gerenciamento se usuário logado, senão para cadastro
     function abrirConta(event) {
       event.preventDefault();
@@ -1026,7 +1401,7 @@
         console.log('abrirConta: raw localStorage.usuarioLogado =', raw);
         if (!raw) {
           // Não está logado — ir para página de cadastro
-          window.location.href = 'Banco de Dados/cadastro_final_page.html';
+          navigateWithFade('Banco de Dados/cadastro_final_page.html');
           return;
         }
 
@@ -1039,17 +1414,349 @@
 
         if (parsed && parsed.usuario) {
           // Usuário logado — abrir gerenciamento de conta
-          window.location.href = 'Condicionais de Conta/gerenciamento_conta.html';
+          navigateWithFade('Condicionais de Conta/gerenciamento_conta.html');
         } else {
           // Valor inválido — limpar e enviar para cadastro
           localStorage.removeItem('usuarioLogado');
-          window.location.href = 'Banco de Dados/cadastro_final_page.html';
+          navigateWithFade('Banco de Dados/cadastro_final_page.html');
         }
       } catch (err) {
         console.error('abrirConta: erro inesperado', err);
-        window.location.href = 'Banco de Dados/cadastro_final_page.html';
+        navigateWithFade('Banco de Dados/cadastro_final_page.html');
       }
     }
+
+    // ========== SISTEMA DE CHATS ==========
+    // Obter chave de armazenamento do chat baseado no usuário logado
+    function getChatsStorageKey() {
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (!usuarioLogado) {
+        return 'chats_guest';
+      }
+      try {
+        const dados = JSON.parse(usuarioLogado);
+        return `chats_${dados.usuario}`;
+      } catch (e) {
+        return 'chats_guest';
+      }
+    }
+
+    // Carregar chats do localStorage
+    function loadChats() {
+      const key = getChatsStorageKey();
+      const stored = localStorage.getItem(key);
+      if (stored) {
+        try {
+          chatsData = JSON.parse(stored);
+        } catch (e) {
+          chatsData = {};
+        }
+      } else {
+        chatsData = {};
+      }
+      renderChatsList();
+    }
+
+    // Salvar chats no localStorage
+    function saveChats() {
+      const key = getChatsStorageKey();
+      localStorage.setItem(key, JSON.stringify(chatsData));
+    }
+
+    // Criar novo chat
+    function createNewChat() {
+      const chatId = Date.now().toString();
+      chatsData[chatId] = {
+        id: chatId,
+        nome: `Chat ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`,
+        mensagens: [],
+        dataCriacao: new Date().toISOString()
+      };
+      currentChatId = chatId;
+      saveChats();
+      
+      // Limpar chat display
+      const chatContainer = document.getElementById('chatContainer');
+      chatContainer.innerHTML = '';
+      logo.classList.remove("small");
+      
+      renderChatsList();
+      
+      // Fechar painel de chats e menu
+      toggleChatsPanel();
+      nav.classList.remove("open");
+      logo.classList.remove("small");
+      contentMenu.classList.remove("show");
+      
+      showToast('Novo chat criado!');
+    }
+
+    // Renderizar lista de chats
+    function renderChatsList() {
+      const chatsList = document.getElementById('chatsList');
+      const chatsArray = Object.values(chatsData).sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+      const savedChats = loadSavedChats();
+      
+      if (chatsArray.length === 0) {
+        chatsList.innerHTML = '<div class="empty-chats">Nenhum chat iniciado</div>';
+        return;
+      }
+
+      chatsList.innerHTML = chatsArray.map(chat => {
+        const isSaved = savedChats.hasOwnProperty(chat.id);
+        const starSymbol = isSaved ? '⭐' : '☆'; // Filled star when saved, outline when not
+        return `
+          <div class="chat-item ${currentChatId === chat.id ? 'active' : ''}" onclick="loadChatMessages('${chat.id}')">
+            <div class="chat-item-text" title="${chat.nome}">
+              ${chat.nome}
+            </div>
+            <button class="chat-item-save ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveChat('${chat.id}')" title="${isSaved ? 'Remover dos salvos' : 'Salvar chat'}">
+              ${starSymbol}
+            </button>
+            <button class="chat-item-delete" onclick="event.stopPropagation(); deleteChat('${chat.id}')">
+              ✕
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Exibir mensagens do chat sem duplicação
+    function displayChatMessages(messages) {
+      const chatContainer = document.getElementById('chatContainer');
+      const body = document.body;
+      const primaryColor = getComputedStyle(body).getPropertyValue('--primary-color').trim();
+      const chatTextUser = getComputedStyle(body).getPropertyValue('--chat-text-user').trim();
+      const chatBgBot = getComputedStyle(body).getPropertyValue('--chat-bg-bot').trim();
+      const textColor = getComputedStyle(body).getPropertyValue('--text-color').trim();
+      
+      chatContainer.innerHTML = '';
+      messages.forEach(msg => {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message");
+        messageDiv.classList.add(msg.tipo === 'user' ? "user-message" : "bot-message");
+        messageDiv.textContent = msg.texto;
+        
+        if (msg.tipo === 'user') {
+          messageDiv.style.backgroundColor = primaryColor;
+          messageDiv.style.color = chatTextUser;
+        } else {
+          messageDiv.style.backgroundColor = chatBgBot;
+          messageDiv.style.color = textColor;
+        }
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      });
+    }
+
+    // Carregar mensagens de um chat
+    function loadChatMessages(chatId) {
+      if (!chatsData[chatId]) return;
+      
+      currentChatId = chatId;
+      const chat = chatsData[chatId];
+      
+      // Carregar mensagens sem duplicação
+      displayChatMessages(chat.mensagens);
+      
+      renderChatsList();
+      // Fechar painel e menu ao selecionar um chat
+      toggleChatsPanel();
+      nav.classList.remove("open");
+      logo.classList.remove("small");
+      logo.classList.toggle("small", chat.mensagens.length > 0);
+    }
+
+    // ========== SISTEMA DE CHATS SALVOS ==========
+    function getSavedChatsKey() {
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (!usuarioLogado) {
+        return 'saved_chats_guest';
+      }
+      try {
+        const dados = JSON.parse(usuarioLogado);
+        return `saved_chats_${dados.usuario}`;
+      } catch (e) {
+        return 'saved_chats_guest';
+      }
+    }
+
+    function loadSavedChats() {
+      const key = getSavedChatsKey();
+      const stored = localStorage.getItem(key);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (e) {
+          return {};
+        }
+      }
+      return {};
+    }
+
+    function saveSavedChats(savedChats) {
+      const key = getSavedChatsKey();
+      localStorage.setItem(key, JSON.stringify(savedChats));
+    }
+
+    function toggleSaveChat(chatId) {
+      if (!chatsData[chatId]) return;
+      
+      const savedChats = loadSavedChats();
+      const chat = chatsData[chatId];
+      
+      if (savedChats.hasOwnProperty(chatId)) {
+        // Remover dos salvos
+        delete savedChats[chatId];
+        showToast('Chat removido dos salvos');
+      } else {
+        // Adicionar aos salvos
+        savedChats[chatId] = {
+          id: chat.id,
+          nome: chat.nome,
+          mensagens: chat.mensagens,
+          dataCriacao: chat.dataCriacao,
+          dataSalva: new Date().toISOString()
+        };
+        showToast('Chat salvo com sucesso!');
+      }
+      
+      saveSavedChats(savedChats);
+      renderChatsList();
+    }
+
+    // Deletar um chat (com modal de confirmação)
+    let chatIdToDelete = null;
+
+    function deleteChat(chatId) {
+      chatIdToDelete = chatId;
+      document.getElementById('deleteChatModal').classList.add('show');
+    }
+
+    function confirmDeleteChat() {
+      if (chatIdToDelete) {
+        // Verificar se o chat está salvo
+        const savedChats = loadSavedChats();
+        if (savedChats.hasOwnProperty(chatIdToDelete)) {
+          showToast('Não é possível deletar um chat que está salvo. Remova-o dos salvos primeiro.', true);
+          cancelDeleteChat();
+          return;
+        }
+
+        delete chatsData[chatIdToDelete];
+        if (currentChatId === chatIdToDelete) {
+          currentChatId = null;
+          document.getElementById('chatContainer').innerHTML = '';
+          document.querySelector('.logo').classList.remove("small");
+        }
+        saveChats();
+        renderChatsList();
+        showToast('Chat deletado');
+      }
+      cancelDeleteChat();
+    }
+
+    function cancelDeleteChat() {
+      chatIdToDelete = null;
+      document.getElementById('deleteChatModal').classList.remove('show');
+    }
+
+    // Toggle do painel de chats
+    function toggleChatsPanel() {
+      const panel = document.getElementById('chatsPanel');
+      const overlay = document.getElementById('overlayChats');
+      const isVisible = panel.style.display !== 'none';
+      
+      panel.style.display = isVisible ? 'none' : 'flex';
+      overlay.classList.toggle('show', !isVisible);
+    }
+
+    // Modificar appendMessage para salvar no chat atual
+    const originalAppendMessage = appendMessage;
+    const wrappedAppendMessage = function(text, sender) {
+      // Chamar função original
+      originalAppendMessage(text, sender);
+      
+      // Salvar mensagem no chat atual
+      if (currentChatId && chatsData[currentChatId]) {
+        chatsData[currentChatId].mensagens.push({
+          texto: text,
+          tipo: sender,
+          timestamp: new Date().toISOString()
+        });
+        saveChats();
+        
+        // Atualizar o nome do chat com a primeira mensagem do usuário se estiver vazio
+        if (sender === 'user' && chatsData[currentChatId].mensagens.filter(m => m.tipo === 'user').length === 1) {
+          const preview = text.substring(0, 30) + (text.length > 30 ? '...' : '');
+          chatsData[currentChatId].nome = preview;
+          saveChats();
+          renderChatsList();
+        }
+      }
+    };
+    appendMessage = wrappedAppendMessage;
+
+    // Carregar chats ao inicializar a página
+    window.addEventListener('load', () => {
+      // Check if we're returning from navigation between pages
+      const isNavigating = sessionStorage.getItem('isNavigatingBetweenPages') === 'true';
+      sessionStorage.removeItem('isNavigatingBetweenPages'); // Clear the flag
+      
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (usuarioLogado && isNavigating) {
+        // We're navigating between pages - restore theme and active chat
+        try {
+          const user = JSON.parse(usuarioLogado);
+          const username = user.usuario;
+          
+          // Restore theme
+          const savedTheme = localStorage.getItem('currentTheme_' + username);
+          if (savedTheme) {
+            if (typeof changeColors === 'function') {
+              changeColors(savedTheme);
+            }
+          }
+        } catch (e) {
+          console.error('Error restoring theme:', e);
+        }
+      }
+      // If not navigating, we start fresh (default theme 'rosa' is already set)
+      
+      loadChats();
+      
+      // Se voltou de página de salvos com um chat para abrir
+      const chatToOpen = localStorage.getItem('chatToOpen');
+      if (chatToOpen) {
+        localStorage.removeItem('chatToOpen');
+        // Aguardar um pouco para os chats serem carregados
+        setTimeout(() => {
+          if (chatsData[chatToOpen]) {
+            loadChatMessages(chatToOpen);
+          }
+        }, 100);
+      } else if (isNavigating) {
+        // Only restore active chat if we're navigating between pages
+        if (usuarioLogado) {
+          try {
+            const user = JSON.parse(usuarioLogado);
+            const username = user.usuario;
+            const savedActiveChat = localStorage.getItem('activeChat_' + username);
+            if (savedActiveChat) {
+              // Aguardar um pouco para os chats serem carregados
+              setTimeout(() => {
+                if (chatsData[savedActiveChat]) {
+                  loadChatMessages(savedActiveChat);
+                }
+              }, 100);
+            }
+          } catch (e) {
+            console.error('Error restoring active chat:', e);
+          }
+        }
+      }
+    });
 
   </script>
 </body>
