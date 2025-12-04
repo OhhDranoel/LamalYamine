@@ -475,24 +475,32 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                responseDiv.textContent = data;
-                
-                // Se cadastro bem-sucedido, mostrar mensagem e redirecionar
-                if (data.includes("cadastrado com sucesso") || data.includes("sucesso")) {
+                // Se cadastro bem-sucedido, armazenar no localStorage e manter conectado
+                if (data.sucesso) {
                     responseDiv.style.color = '#F2E52E';
                     responseDiv.textContent = 'Cadastro Realizado com Sucesso!';
                     document.getElementById('cadastroForm').style.display = 'none';
                     document.querySelector('.login-screen a').style.display = 'none';
+                    
+                    // Armazenar usuário no localStorage para manter conectado
+                    console.log('Cadastro: armazenando usuario no localStorage ->', {usuario: data.usuario, email: data.email});
+                    localStorage.setItem('usuarioLogado', JSON.stringify({
+                        usuario: data.usuario,
+                        email: data.email
+                    }));
+                    
                     setTimeout(() => {
                         window.location.href = '../tela_inicial.html';
                     }, 3000);
                 } else {
                     responseDiv.style.color = '#F22771';
+                    responseDiv.textContent = data.mensagem || 'Erro ao processar cadastro. Tente novamente.';
                 }
             })
             .catch(error => {
+                console.error('Erro ao fazer cadastro:', error);
                 responseDiv.textContent = 'Erro ao processar cadastro. Tente novamente.';
                 responseDiv.style.color = '#F22771';
             });

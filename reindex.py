@@ -15,7 +15,9 @@ load_dotenv()
 
 # Configurações
 CAMINHO_DB = "db"
-ARQUIVO_TXT = r"C:\Users\leoed\OneDrive\Documentos\LamalYamine-1\base\Teste Notas.txt"
+# Usar caminho relativo baseado no diretório do script
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARQUIVO_TXT = os.path.join(BASE_DIR, "base", "Teste Notas.txt")
 
 
 def _read_respostas_from_file(path: str):
@@ -74,7 +76,7 @@ def reindex(caminho_txt: str = ARQUIVO_TXT, caminho_db: str = CAMINHO_DB):
             persist_directory=caminho_db
         )
         print("[reindex] DB persistido.")
-        print("[reindex] Reindexação concluída! ✅")
+        print("[reindex] Reindexação concluída!")
         return True
     except Exception as e:
         print(f"[reindex][ERRO] Falha ao reindexar: {e}")

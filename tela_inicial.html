@@ -5,492 +5,605 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/boxicons@2.1.1/dist/boxicons.min.js"></script>
-  <link rel="stylesheet" href="menu.css">
-</head>
-<body>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap');
+
+    /* Variáveis de Cores */
+    :root {
+        /* Cores Padrão (Fallback) */
+        --bg-color: #fcfcfc;
+        --text-color: #000000;
+        --primary-color: #F22771; /* Rosa Padrão */
+        --secondary-color: #FF69B4;
+        --chat-bg-bot: #e0e0e0;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 242, 39, 113; /* RGB para sombra */
+        --logo-color: var(--primary-color); /* Novo: Cor padrão do logo */
+        --logo-shadow-color: var(--text-color); /* Novo: Cor padrão da sombra do logo */
     }
 
+    /* Esquemas de Cores */
+    .color-scheme-preto {
+        --bg-color: #1a1a1a;
+        --text-color: #FFFFFF;
+        --primary-color: #333333;
+        --secondary-color: #555555;
+        --chat-bg-bot: #2c2c2c;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 51, 51, 51;
+        --logo-color: #FFFFFF; /* CORREÇÃO: Logo branco para fundo escuro */
+        --logo-shadow-color: #333333; /* CORREÇÃO: Sombra escura para logo claro */
+    }
+
+    .color-scheme-branco {
+        --bg-color: #FFFFFF;
+        --text-color: #000000;
+        --primary-color: #F0F0F0;
+        --secondary-color: #CCCCCC;
+        --chat-bg-bot: #e0e0e0;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 240, 240, 240;
+        --logo-color: #000000; /* CORREÇÃO: Logo preto para fundo claro */
+        --logo-shadow-color: #F0F0F0; /* CORREÇÃO: Sombra clara para logo escuro */
+    }
+
+    .color-scheme-amarelo {
+        --bg-color: #FFFBE6;
+        --text-color: #000000;
+        --primary-color: #FFD700;
+        --secondary-color: #F2E52E;
+        --chat-bg-bot: #f0f0f0;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 255, 215, 0;
+    }
+
+    .color-scheme-rosa {
+        --bg-color: #fcfcfc;
+        --text-color: #000000;
+        --primary-color: #F22771;
+        --secondary-color: #FF69B4;
+        --chat-bg-bot: #f0f0f0;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 242, 39, 113;
+    }
+
+    .color-scheme-azul {
+        --bg-color: #E6F0FF;
+        --text-color: #000000;
+        --primary-color: #1E90FF;
+        --secondary-color: #0000FF;
+        --chat-bg-bot: #D9E6FF;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 30, 144, 255;
+    }
+
+    .color-scheme-verde {
+        --bg-color: #E6FFE6;
+        --text-color: #000000;
+        --primary-color: #32CD32;
+        --secondary-color: #00FF00;
+        --chat-bg-bot: #D9FFD9;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 50, 205, 50;
+    }
+
+    .color-scheme-laranja {
+        --bg-color: #FFF5E6;
+        --text-color: #000000;
+        --primary-color: #FF8C00;
+        --secondary-color: #FFA500;
+        --chat-bg-bot: #FFEBD9;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 255, 140, 0;
+    }
+
+    .color-scheme-roxo {
+        --bg-color: #F0E6FF;
+        --text-color: #000000;
+        --primary-color: #9932CC;
+        --secondary-color: #800080;
+        --chat-bg-bot: #EBD9FF;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 153, 50, 204;
+    }
+
+    .color-scheme-rosa-choque {
+        --bg-color: #FFECF5;
+        --text-color: #000000;
+        --primary-color: #FF1493;
+        --secondary-color: #FF69B4;
+        --chat-bg-bot: #FFE6F0;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 255, 20, 147;
+    }
+
+    .color-scheme-ciano {
+        --bg-color: #E6FFFF;
+        --text-color: #000000;
+        --primary-color: #00CED1;
+        --secondary-color: #00FFFF;
+        --chat-bg-bot: #D9FFFF;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 0, 206, 209;
+    }
+
+    .color-scheme-marrom {
+        --bg-color: #F5EFE6;
+        --text-color: #000000;
+        --primary-color: #8B4513;
+        --secondary-color: #A52A2A;
+        --chat-bg-bot: #EBE0D9;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 139, 69, 19;
+    }
+
+    .color-scheme-dourado {
+        --bg-color: #FFFBE6;
+        --text-color: #000000;
+        --primary-color: #DAA520;
+        --secondary-color: #FFD700;
+        --chat-bg-bot: #FFF5D9;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 218, 165, 32;
+    }
+
+    .color-scheme-indigo {
+        --bg-color: #E6E6FF;
+        --text-color: #000000;
+        --primary-color: #483D8B;
+        --secondary-color: #4B0082;
+        --chat-bg-bot: #D9D9FF;
+        --chat-text-user: #FFFFFF;
+        --primary-color-rgb: 72, 61, 139;
+    }
+
+    .color-scheme-tomate {
+        --bg-color: #FFEBE6;
+        --text-color: #000000;
+        --primary-color: #FF4500;
+        --secondary-color: #FF6347;
+        --chat-bg-bot: #FFD9D9;
+        --chat-text-user: #000000;
+        --primary-color-rgb: 255, 69, 0;
+    }
+
+    /* Estilos Globais */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif; /* Fonte mais moderna para o corpo */
+    }
 
     body {
-      height: 100vh;
-      background: #fcfcfc;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      transition: background-color 0.3s ease, color 0.3s ease;
+        height: 100vh;
+        background: var(--bg-color);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        color: var(--text-color);
     }
 
-
+    /* Navegação (Menu Circular) */
     nav {
-      position: absolute;
-      top: 20px;
-      left: 0;
-      width: 80px;
-      height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 80px;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: grab;
+        z-index: 100;
     }
-
 
     nav .nav-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: rotate(4995deg);
-      background-color: #F22771;
-      transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(4995deg);
+        background-color: var(--primary-color);
+        transition: background-color 0.3s ease;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
-
 
     .nav-content .toggle-btn,
     .nav-content span a {
-      height: 60px;
-      width: 60px;
-      background: #F22771;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        height: 60px;
+        width: 60px;
+        background: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease, box-shadow 0.3s ease;
     }
-
 
     .nav-content .toggle-btn {
-      font-size: 35px;
-      color: #fff;
-      z-index: 100;
-      cursor: pointer;
-      transform: rotate(500deg);
-      transition: all 0.6s ease;
+        font-size: 35px;
+        color: var(--chat-text-user);
+        z-index: 100;
+        cursor: pointer;
+        transform: rotate(500deg);
+        transition: all 0.6s ease;
     }
-
 
     nav.open .toggle-btn {
-      transform: rotate(45deg);
+        transform: rotate(45deg);
     }
-
 
     .nav-content span {
-      position: absolute;
-      transition: all 0.6s ease;
-      opacity: 0;
+        position: absolute;
+        transition: all 0.6s ease;
+        opacity: 0;
     }
-
 
     nav.open .nav-content span {
-      transform: rotate(calc(var(--i) * (360deg / 8))) translateX(-120px);
-      opacity: 1;
+        transform: rotate(calc(var(--i) * (360deg / 8))) translateX(-120px);
+        opacity: 1;
     }
-
 
     .nav-content span a {
-      transform: rotate(calc(-1 * var(--i) * (360deg / 8)));
+        transform: rotate(calc(-1 * var(--i) * (360deg / 8)));
+        background: var(--secondary-color);
+        color: var(--text-color);
     }
 
+    .nav-content span a:hover {
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+    }
 
+    /* Logo */
     .logo {
-      font-size: 1.5rem;
-      font-family: 'Press Start 2P', cursive;
-      color: #FFFFFF;
-      text-shadow: 3px 3px 0 #F2E52E, 0 0 10px #F22771, 0 0 20px #F22771;
-      transition: color 0.3s ease;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+        font-size: 2.5rem;
+        font-family: 'Press Start 2P', cursive;
+        color: var(--logo-color); /* Usando a nova variável */
+        /* A sombra será definida via JS na função changeColors para usar as variáveis */
+        text-shadow: 4px 4px 0 var(--logo-shadow-color), 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+        transition: all 0.5s ease;
+        position: absolute;
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        user-select: none;
     }
-
 
     .logo.small {
-      font-size: 30px;
-      top: 5%;
-      transform: translate(-50%, 0);
+        font-size: 30px;
+        top: 5%; 
+        transform: translate(-50%, 0); 
     }
 
-
+    /* Chat */
     .chat-container {
-      position: absolute;
-      bottom: 80px;
-      width: 90%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 300px;
-      overflow-y: auto;
+        position: absolute;
+        bottom: 80px;
+        width: 90%;
+        max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 70vh;
+        overflow-y: auto;
+        padding: 10px;
+        /* Scrollbar estilizado */
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-color) var(--bg-color);
     }
 
+    .chat-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .chat-container::-webkit-scrollbar-thumb {
+        background-color: var(--primary-color);
+        border-radius: 10px;
+    }
+
+    .chat-container::-webkit-scrollbar-track {
+        background: var(--bg-color);
+    }
 
     .message {
-      max-width: 80%;
-      padding: 10px 15px;
-      border-radius: 15px;
-      word-wrap: break-word;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, color 0.3s ease;
+        max-width: 85%;
+        padding: 12px 18px;
+        border-radius: 20px;
+        word-wrap: break-word;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
-
 
     .user-message {
-      background: #F22771;
-      color: #fff;
-      align-self: flex-end;
-      text-align: right;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        align-self: flex-end;
+        text-align: right;
+        border-bottom-right-radius: 5px;
     }
-
 
     .bot-message {
-      background: #e0e0e0;
-      color: #000;
-      align-self: flex-start;
-      text-align: left;
+        background: var(--chat-bg-bot);
+        color: var(--text-color);
+        align-self: flex-start;
+        text-align: left;
+        border-bottom-left-radius: 5px;
     }
 
-
+    /* Input e Botões */
     .input-container {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 500px;
+        padding: 0 10px;
     }
-
 
     .input-container input {
-      width: 300px;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 25px;
-      font-size: 16px;
-      outline: none;
+        flex-grow: 1;
+        padding: 12px 20px;
+        border: 2px solid var(--primary-color);
+        border-radius: 25px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .input-container input:focus {
+        box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+    }
 
     .input-container button {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      margin-left: 10px;
-      cursor: pointer;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        margin-left: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease, transform 0.1s ease;
     }
 
+    .input-container button:hover {
+        background: var(--secondary-color);
+        transform: translateY(-1px);
+    }
 
     .content-button-container {
-      position: relative;
-      margin-right: 10px; /* Espaço entre o novo botão e o input */
+        position: relative;
+        margin-right: 10px;
     }
-
 
     .content-button {
-      background: #F22771; /* Cor de destaque */
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      white-space: nowrap;
-      transition: background 0.3s ease;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        border: none;
+        padding: 12px 15px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: background 0.3s ease, transform 0.1s ease;
     }
-
 
     .content-button:hover {
-      background: #D41D60;
+        background: var(--secondary-color);
+        transform: translateY(-1px);
     }
-
 
     .content-menu {
-      position: absolute;
-      bottom: 100%; /* Aparece acima do botão */
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 100;
-      min-width: 180px;
-      padding: 8px 0;
-      display: none; /* Escondido por padrão */
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        background-color: var(--bg-color);
+        border: 1px solid var(--secondary-color);
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        z-index: 100;
+        min-width: 180px;
+        padding: 8px 0;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.2s ease, transform 0.2s ease;
     }
-
 
     .content-menu.show {
-      display: block;
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) translateY(-5px);
     }
-
 
     .content-menu-option {
-      padding: 10px 15px;
-      cursor: pointer;
-      color: #333;
-      transition: background-color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+        padding: 10px 15px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
-
 
     .content-menu-option:hover {
-      background-color: #f0f0f0;
+        background-color: var(--chat-bg-bot);
     }
 
-
-    /* Estilos para o modal de notas */
-    .note-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 2000; /* Acima de outros modais */
-      justify-content: center;
-      align-items: center;
+    /* Modais (Notas e Cores) */
+    .note-modal, .color-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(3px);
     }
 
-
-    .note-modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    .note-modal-content, .color-modal-content {
+        background-color: var(--bg-color);
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border: 1px solid var(--secondary-color);
     }
-
 
     .note-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-
-    .note-modal-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #333;
+    .note-modal-title, .modal-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
     }
 
-
-    .note-modal-close {
-      background: none;
-      border: none;
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: #888;
+    .note-modal-close, .close-modal {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: color 0.2s;
     }
 
+    .note-modal-close:hover, .close-modal:hover {
+        color: var(--primary-color);
+    }
 
     .note-textarea {
-      width: 100%;
-      height: 150px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: none;
-      outline: none;
+        width: 100%;
+        height: 150px;
+        padding: 15px;
+        border: 2px solid var(--secondary-color);
+        border-radius: 10px;
+        font-size: 16px;
+        resize: none;
+        outline: none;
+        background-color: var(--bg-color);
+        color: var(--text-color);
     }
-
 
     .note-modal-footer {
-      display: flex;
-      justify-content: flex-end;
+        display: flex;
+        justify-content: flex-end;
     }
-
 
     .note-modal-save {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease, transform 0.1s ease;
     }
-
 
     .note-modal-save:hover {
-      background: #333;
+        background: var(--secondary-color);
+        transform: translateY(-1px);
     }
 
-
-    /* Ajuste para o input-container para acomodar o novo botão */
-    .input-container {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-
-
-    .input-container input {
-      width: 300px;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 25px;
-      font-size: 16px;
-      outline: none;
-    }
-
-
-    .input-container button {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 25px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-
-    /* Estilos para o modal de seleção de cores */
-    .color-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-
-
-    .color-modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 350px;
-      max-width: 90%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-
+    /* Modal de Cores */
     .color-options {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-top: 15px;
     }
-
 
     .color-option {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: transform 0.2s, border-color 0.2s;
-      margin: 0 auto;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: transform 0.2s, border-color 0.2s;
+        margin: 0 auto;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
 
     .color-option:hover {
-      transform: scale(1.1);
+        transform: scale(1.1);
     }
-
 
     .color-option.selected {
-      border-color: #000;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px var(--secondary-color);
     }
 
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-
-    .modal-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-
-    /* Toast de confirmação */
+    /* Toast */
     .toast {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      display: none;
-      z-index: 3000;
-      font-size: 14px;
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        background: var(--primary-color);
+        color: var(--chat-text-user);
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 3000;
+        font-size: 14px;
+        transition: background 0.3s ease;
     }
 
+    .toast.error {
+        background: #FF4500;
+    }
 
     .toast.show {
-      display: block;
-      animation: toast-in 0.25s ease;
+        display: block;
+        animation: toast-in 0.25s ease;
     }
-
 
     @keyframes toast-in {
-      from { transform: translateY(10px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+        from { transform: translateY(10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
-
-    /* Loader pequeño para botão salvar */
+    /* Loader */
     .loader-inline {
-      border: 2px solid rgba(255,255,255,0.2);
-      border-top: 2px solid #fff;
-      border-radius: 50%;
-      width: 14px;
-      height: 14px;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 8px;
-      animation: spin 0.8s linear infinite;
+        border: 2px solid rgba(255,255,255,0.2);
+        border-top: 2px solid var(--chat-text-user);
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+        animation: spin 0.8s linear infinite;
     }
-
 
     @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
     }
   </style>
+</head>
+<body class="color-scheme-rosa">
+  
   <nav>
     <div class="nav-content">
       <div class="toggle-btn">
@@ -504,10 +617,8 @@
     </div>
   </nav>
 
-
   <div class="logo">A.K.I.R.A</div>
   <div class="chat-container" id="chatContainer"></div>
-
 
   <div class="input-container">
     <div class="content-button-container">
@@ -526,7 +637,6 @@
     <input type="file" id="fileInput" style="display: none;" /> <!-- Input de arquivo escondido -->
   </div>
 
-
   <!-- Modal de notas suspensas -->
   <div class="note-modal" id="noteModal">
     <div class="note-modal-content">
@@ -540,7 +650,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- Modal de seleção de cores -->
   <div class="color-modal" id="colorModal">
@@ -568,77 +677,151 @@
     </div>
   </div>
 
+  <!-- Toast de confirmação -->
+  <div class="toast" id="toast"></div>
 
   <script>
-    const nav = document.querySelector("nav"),
-          toggleBtn = nav.querySelector(".toggle-btn"),
-          logo = document.querySelector(".logo"),
-          chatContainer = document.getElementById("chatContainer"),
-          userInput = document.getElementById("userInput"),
-          colorPicker = document.getElementById("colorPicker"),
-          colorModal = document.getElementById("colorModal"),
-          closeModal = document.getElementById("closeModal"),
-          colorOptions = document.querySelectorAll(".color-option"),
-          contentButton = document.getElementById("contentButton"),
-          contentMenu = document.getElementById("contentMenu"),
-          addTextOption = document.getElementById("addTextOption"),
-          addFileOption = document.getElementById("addFileOption"),
-          fileInput = document.getElementById("fileInput"),
-          noteModal = document.getElementById("noteModal"),
-          closeNoteModal = document.getElementById("closeNoteModal"),
-          noteTextarea = document.getElementById("noteTextarea"),
-          saveNoteButton = document.getElementById("saveNoteButton");
+    // 🔹 Sistema de cores atualizado para usar classes CSS
+    function changeColors(color) {
+      const body = document.body;
+      const logo = document.querySelector(".logo");
+      const navContent = document.querySelector(".nav-content");
+      const userMessages = document.querySelectorAll(".user-message");
+      const botMessages = document.querySelectorAll(".bot-message");
+
+      // Remove todas as classes de esquema de cores existentes
+      body.className = body.className.split(' ').filter(c => !c.startsWith('color-scheme-')).join(' ');
+
+      // Adiciona a nova classe de esquema de cores
+      body.classList.add(`color-scheme-${color}`);
+
+      // A cor primária é definida pela variável CSS no body.
+      const primaryColor = getComputedStyle(body).getPropertyValue('--primary-color').trim();
+      const chatTextUser = getComputedStyle(body).getPropertyValue('--chat-text-user').trim();
+      const chatBgBot = getComputedStyle(body).getPropertyValue('--chat-bg-bot').trim();
+      const textColor = getComputedStyle(body).getPropertyValue('--text-color').trim();
+      
+      // Novas variáveis para o logo
+      const logoColor = getComputedStyle(body).getPropertyValue('--logo-color').trim() || primaryColor;
+      const logoShadowColor = getComputedStyle(body).getPropertyValue('--logo-shadow-color').trim() || textColor;
 
 
+      // Atualiza estilos que não são herdados ou precisam de manipulação específica
+      navContent.style.backgroundColor = primaryColor;
+      
+      // Usando as novas variáveis para o logo
+      logo.style.color = logoColor;
+      logo.style.textShadow = `4px 4px 0 ${logoShadowColor}, 0 0 15px ${primaryColor}, 0 0 30px ${primaryColor}`;
+
+      // Atualiza as mensagens existentes
+      userMessages.forEach(message => {
+        message.style.backgroundColor = primaryColor;
+        message.style.color = chatTextUser;
+      });
+
+      botMessages.forEach(message => {
+        message.style.backgroundColor = chatBgBot;
+        message.style.color = textColor;
+      });
+    }
+
+    // -------------------------------------------------------------------
+    // 🔹 Lógica de UI e Servidor (IA) Restaurada
+    // -------------------------------------------------------------------
+
+    const nav = document.querySelector("nav");
+    const toggleBtn = document.querySelector(".toggle-btn");
+    const logo = document.querySelector(".logo");
+    const chatContainer = document.getElementById("chatContainer");
+    const userInput = document.getElementById("userInput");
+    const colorPicker = document.getElementById("colorPicker");
+    const colorModal = document.getElementById("colorModal");
+    const closeModal = document.getElementById("closeModal");
+    const colorOptions = document.querySelectorAll(".color-option");
+    const contentButton = document.getElementById("contentButton");
+    const contentMenu = document.getElementById("contentMenu");
+    const addTextOption = document.getElementById("addTextOption");
+    const addFileOption = document.getElementById("addFileOption");
+    const fileInput = document.getElementById("fileInput");
+    const noteModal = document.getElementById("noteModal");
+    const closeNoteModal = document.getElementById("closeNoteModal");
+    const saveNoteButton = document.getElementById("saveNoteButton");
+    const noteTextarea = document.getElementById("noteTextarea");
+    const toastElement = document.getElementById("toast"); // Renomeado para evitar conflito com a função showToast
+
+    // Inicializa com a cor padrão (rosa)
+    changeColors('rosa');
+
+    // Toggle do menu
     toggleBtn.addEventListener("click", () => {
       nav.classList.toggle("open");
+      logo.classList.toggle("small");
     });
 
+    // Lógica do modal de cores
+    colorPicker.addEventListener("click", (e) => {
+      e.preventDefault();
+      colorModal.style.display = "flex";
+    });
 
-    // 🔹 Lógica do botão "+ Conteúdo"
+    closeModal.addEventListener("click", () => {
+      colorModal.style.display = "none";
+    });
+
+    colorOptions.forEach(option => {
+      option.addEventListener("click", () => {
+        const selectedColor = option.getAttribute("data-color");
+        changeColors(selectedColor);
+        
+        // Remove a classe 'selected' de todos e adiciona ao clicado
+        colorOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+
+        colorModal.style.display = "none";
+        showToast(`Esquema de cores alterado para ${selectedColor.toUpperCase()}!`);
+      });
+    });
+
+    // Lógica do botão "+ Conteúdo"
     contentButton.addEventListener("click", (e) => {
-      e.stopPropagation(); // Impede que o clique feche o menu imediatamente
+      e.stopPropagation();
       contentMenu.classList.toggle("show");
     });
 
-
-    // Fechar o menu ao clicar fora
+    // Fechar menu de conteúdo ao clicar fora
     document.addEventListener("click", (e) => {
       if (!contentButton.contains(e.target) && !contentMenu.contains(e.target)) {
         contentMenu.classList.remove("show");
       }
     });
 
-
-    // Opção "Adicionar Texto"
+    // Opção "Adicionar Texto" (abre modal de notas)
     addTextOption.addEventListener("click", () => {
       contentMenu.classList.remove("show");
       noteModal.style.display = "flex";
-      noteTextarea.value = ""; // Limpa o campo
+      noteTextarea.value = ''; // Limpa o textarea
       noteTextarea.focus();
     });
 
-
-    // Opção "Adicionar Arquivo"
+    // Opção "Adicionar Arquivo" (abre input de arquivo)
     addFileOption.addEventListener("click", () => {
       contentMenu.classList.remove("show");
-      fileInput.click(); // Simula o clique no input de arquivo escondido
+      fileInput.click();
     });
 
-
-    // 🔹 Lógica do Modal de Notas
+    // Fechar modal de notas
     closeNoteModal.addEventListener("click", () => {
       noteModal.style.display = "none";
     });
 
-
+    // Fechar modal de notas ao clicar fora
     noteModal.addEventListener("click", (e) => {
       if (e.target === noteModal) {
         noteModal.style.display = "none";
       }
     });
 
-
+    // 🔹 Lógica de Salvar Nota (Comunicação com o Servidor IA)
     saveNoteButton.addEventListener("click", () => {
       const noteText = noteTextarea.value.trim();
       if (!noteText) {
@@ -646,12 +829,10 @@
         return;
       }
 
-
       // Feedback: desabilita botão e mostra loader
       saveNoteButton.disabled = true;
       const originalText = saveNoteButton.textContent;
       saveNoteButton.innerHTML = '<span class="loader-inline"></span> Salvando...';
-
 
       fetch("http://127.0.0.1:5000/adicionar_texto", {
         method: "POST",
@@ -662,11 +843,8 @@
         let data;
         try { data = await res.json(); } catch(e) { data = null; }
         if (res.ok && data && data.status === 'sucesso') {
-          const messageElement = document.createElement("div");
-          messageElement.classList.add("message", "user-message");
-          messageElement.textContent = `[NOTA SALVA]\n${noteText}`;
-          chatContainer.appendChild(messageElement);
-          chatContainer.scrollTop = chatContainer.scrollHeight;
+          // Adiciona a mensagem do usuário ao chat
+          appendMessage(`[NOTA SALVA]\n${noteText}`, 'user');
           noteModal.style.display = "none";
           noteTextarea.value = "";
           showToast('Nota salva com sucesso.');
@@ -685,23 +863,47 @@
       });
     });
 
+    // 🔹 Função auxiliar para adicionar mensagens ao chat
+    function appendMessage(text, sender) {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+      messageDiv.classList.add(sender === 'user' ? "user-message" : "bot-message");
+      messageDiv.textContent = text;
+      
+      // Aplica a cor correta ao enviar a mensagem (usando a lógica de cores atualizada)
+      const body = document.body;
+      const primaryColor = getComputedStyle(body).getPropertyValue('--primary-color').trim();
+      const chatTextUser = getComputedStyle(body).getPropertyValue('--chat-text-user').trim();
+      const chatBgBot = getComputedStyle(body).getPropertyValue('--chat-bg-bot').trim();
+      const textColor = getComputedStyle(body).getPropertyValue('--text-color').trim();
 
-    // Toast helper
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    document.body.appendChild(toast);
+      if (sender === 'user') {
+        messageDiv.style.backgroundColor = primaryColor;
+        messageDiv.style.color = chatTextUser;
+      } else {
+        messageDiv.style.backgroundColor = chatBgBot;
+        messageDiv.style.color = textColor;
+      }
 
-
-    function showToast(message, isError = false, timeout = 3500) {
-      toast.textContent = message;
-      toast.style.background = isError ? 'rgba(180,40,40,0.95)' : 'rgba(0,0,0,0.85)';
-      toast.classList.add('show');
-      clearTimeout(toast._hideTimer);
-      toast._hideTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, timeout);
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
+    // 🔹 Toast Notification
+    function showToast(message, isError = false, timeout = 3000) {
+      toastElement.textContent = message;
+      toastElement.classList.remove('error');
+      if (isError) {
+        toastElement.classList.add('error');
+      }
+      toastElement.classList.add('show');
+      
+      // Limpa qualquer timer anterior e define um novo
+      clearTimeout(toastElement._hideTimer);
+      toastElement._hideTimer = setTimeout(() => {
+        toastElement.classList.remove('show');
+      }, timeout);
+    }
 
     // 🔹 Lógica para lidar com o arquivo selecionado
     fileInput.addEventListener("change", () => {
@@ -714,13 +916,12 @@
       }
     });
 
-
+    // 🔹 Lógica de Arrastar o Menu (Nav)
     function onDrag({ movementY }) {
       const navStyle = window.getComputedStyle(nav),
             navTop = parseInt(navStyle.top),
             navHeight = parseInt(navStyle.height),
             windHeight = window.innerHeight;
-
 
       nav.style.top = navTop > 0 ? `${navTop + movementY}px` : "1px";
       if (navTop > windHeight - navHeight) {
@@ -728,49 +929,34 @@
       }
     }
 
-
     nav.addEventListener("mousedown", () => {
       nav.addEventListener("mousemove", onDrag);
     });
-
 
     nav.addEventListener("mouseup", () => {
       nav.removeEventListener("mousemove", onDrag);
     });
 
-
     nav.addEventListener("mouseleave", () => {
       nav.removeEventListener("mousemove", onDrag);
     });
 
-
-
-
+    // 🔹 Função Principal de Envio de Mensagem (Comunicação com o Servidor IA)
     function sendMessage() {
       const text = userInput.value.trim();
-      const isNoteOrFile = text.startsWith('[NOTA ADICIONADA]') || text.startsWith('[ARQUIVO ANEXADO]');
+      const isNoteOrFile = text.startsWith('[NOTA SALVA]') || text.startsWith('[ARQUIVO ANEXADO]');
       const sendBtn = document.querySelector('.input-container button');
+      
       if (text !== "") {
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message", "user-message");
-        messageElement.textContent = text;
-        chatContainer.appendChild(messageElement);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-
+        // Adiciona a mensagem do usuário ao chat
+        appendMessage(text, 'user');
 
         logo.classList.add("small");
         userInput.disabled = true;
         sendBtn.disabled = true;
 
-
-        // 🔹 Chamar o backend Flask
-        // Se for nota ou arquivo, não chama o backend, apenas exibe a mensagem
+        // Se for nota ou arquivo, apenas exibe a mensagem e não chama o backend
         if (isNoteOrFile) {
-          const messageElement = document.createElement("div");
-          messageElement.classList.add("message", "user-message");
-          messageElement.textContent = text;
-          chatContainer.appendChild(messageElement);
-          chatContainer.scrollTop = chatContainer.scrollHeight;
           userInput.value = "";
           userInput.disabled = false;
           sendBtn.disabled = false;
@@ -778,7 +964,7 @@
           return;
         }
 
-
+        // Chamar o backend Flask
         fetch("http://127.0.0.1:5000/perguntar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -786,18 +972,13 @@
         })
         .then(res => res.json())
         .then(data => {
-          const botMessageElement = document.createElement("div");
-          botMessageElement.classList.add("message", "bot-message");
-          botMessageElement.textContent = data.resposta || data.mensagem || "Erro ao receber resposta.";
-          chatContainer.appendChild(botMessageElement);
-          chatContainer.scrollTop = chatContainer.scrollHeight;
+          const botResponse = data.resposta || data.mensagem || "Erro ao receber resposta.";
+          appendMessage(botResponse, 'bot');
           userInput.value = "";
         })
         .catch(err => {
-          const botMessageElement = document.createElement("div");
-          botMessageElement.classList.add("message", "bot-message");
-          botMessageElement.textContent = "⚠️ Erro ao conectar com o servidor.";
-          chatContainer.appendChild(botMessageElement);
+          console.error(err);
+          appendMessage("⚠️ Erro ao conectar com o servidor.", 'bot');
         })
         .finally(() => {
           userInput.disabled = false;
@@ -807,21 +988,22 @@
       }
     }
 
-
+    // Adiciona a funcionalidade de enviar com Enter
     userInput.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
+        event.preventDefault();
         sendMessage();
       }
     });
 
-    // Função para abrir conta - verifica se usuário está logado
+    // Função abrirConta: redireciona para gerenciamento se usuário logado, senão para cadastro
     function abrirConta(event) {
       event.preventDefault();
       try {
         const raw = localStorage.getItem('usuarioLogado');
         console.log('abrirConta: raw localStorage.usuarioLogado =', raw);
         if (!raw) {
-          console.log('abrirConta: nenhum usuário logado encontrado');
+          // Não está logado — ir para página de cadastro
           window.location.href = 'Banco de Dados/cadastro_final_page.html';
           return;
         }
@@ -834,11 +1016,10 @@
         }
 
         if (parsed && parsed.usuario) {
-          console.log('abrirConta: usuário detectado ->', parsed.usuario);
+          // Usuário logado — abrir gerenciamento de conta
           window.location.href = 'Condicionais de Conta/gerenciamento_conta.html';
         } else {
-          // Valor inválido no localStorage, limpar e direcionar para cadastro
-          console.log('abrirConta: localStorage existente mas inválido, limpando e redirecionando');
+          // Valor inválido — limpar e enviar para cadastro
           localStorage.removeItem('usuarioLogado');
           window.location.href = 'Banco de Dados/cadastro_final_page.html';
         }
@@ -848,89 +1029,6 @@
       }
     }
 
-    // Debug: mostrar estado do localStorage ao carregar a página
-    console.log('tela_inicial load: localStorage.usuarioLogado =', localStorage.getItem('usuarioLogado'));
-
-
-    // 🔹 Sistema de cores continua igual
-    function changeColors(color) {
-      const body = document.body;
-      const navContent = document.querySelector(".nav-content");
-      const logo = document.querySelector(".logo");
-      const chatContainer = document.getElementById("chatContainer");
-      const userMessages = document.querySelectorAll(".user-message");
-      const botMessages = document.querySelectorAll(".bot-message");
-
-
-      const colorMap = {
-        preto: { background: "#000000", text: "#FFFFFF", menu: "#1A1A1A", logo: "#FFFFFF", shadow: "3px 3px 0 #333333" },
-        branco: { background: "#FFFFFF", text: "#000000", menu: "#F0F0F0", logo: "#000000", shadow: "3px 3px 0 #CCCCCC" },
-        amarelo: { background: "#F2E52E", text: "#000000", menu: "#FFD700", logo: "#000000", shadow: "3px 3px 0 #D4B700" },
-        rosa: { background: "#F22771", text: "#FFFFFF", menu: "#FF69B4", logo: "#FFFFFF", shadow: "3px 3px 0 #D41D60" },
-        azul: { background: "#0000FF", text: "#FFFFFF", menu: "#1E90FF", logo: "#FFFFFF", shadow: "3px 3px 0 #0000CC" },
-        verde: { background: "#00FF00", text: "#000000", menu: "#32CD32", logo: "#000000", shadow: "3px 3px 0 #00CC00" },
-        laranja: { background: "#FFA500", text: "#000000", menu: "#FF8C00", logo: "#000000", shadow: "3px 3px 0 #CC8400" },
-        roxo: { background: "#800080", text: "#FFFFFF", menu: "#9932CC", logo: "#FFFFFF", shadow: "3px 3px 0 #660066" },
-        "rosa-choque": { background: "#FF1493", text: "#FFFFFF", menu: "#FF69B4", logo: "#FFFFFF", shadow: "3px 3px 0 #CC1076" },
-        ciano: { background: "#00FFFF", text: "#000000", menu: "#00CED1", logo: "#000000", shadow: "3px 3px 0 #00B7BA" },
-        marrom: { background: "#A52A2A", text: "#FFFFFF", menu: "#8B4513", logo: "#FFFFFF", shadow: "3px 3px 0 #8B0000" },
-        dourado: { background: "#FFD700", text: "#000000", menu: "#DAA520", logo: "#000000", shadow: "3px 3px 0 #B8860B" },
-        indigo: { background: "#4B0082", text: "#FFFFFF", menu: "#483D8B", logo: "#FFFFFF", shadow: "3px 3px 0 #3A0072" },
-        tomate: { background: "#FF6347", text: "#000000", menu: "#FF4500", logo: "#000000", shadow: "3px 3px 0 #CC4C39" }
-      };
-
-
-      if (colorMap[color]) {
-        body.style.backgroundColor = colorMap[color].background;
-        body.style.color = colorMap[color].text;
-        navContent.style.backgroundColor = colorMap[color].menu;
-        logo.style.color = colorMap[color].logo;
-        logo.style.textShadow = `${colorMap[color].shadow}, 0 0 10px ${colorMap[color].menu}, 0 0 20px ${colorMap[color].menu}`;
-
-
-        userMessages.forEach(message => {
-          message.style.backgroundColor = colorMap[color].menu;
-          message.style.color = colorMap[color].text;
-        });
-
-
-        botMessages.forEach(message => {
-          message.style.backgroundColor = color === 'branco' ? '#e0e0e0' :
-                                         color === 'amarelo' || color === 'dourado' ? '#f0f0f0' :
-                                         colorMap[color].background;
-          message.style.color = colorMap[color].text;
-        });
-      }
-    }
-
-
-    colorPicker.addEventListener("click", (e) => {
-      e.preventDefault();
-      colorModal.style.display = "flex";
-    });
-
-
-    closeModal.addEventListener("click", () => {
-      colorModal.style.display = "none";
-    });
-
-
-    colorModal.addEventListener("click", (e) => {
-      if (e.target === colorModal) {
-        colorModal.style.display = "none";
-      }
-    });
-
-
-    colorOptions.forEach(option => {
-      option.addEventListener("click", () => {
-        const color = option.getAttribute("data-color");
-        changeColors(color);
-        colorModal.style.display = "none";
-        colorOptions.forEach(opt => opt.classList.remove("selected"));
-        option.classList.add("selected");
-      });
-    });
   </script>
 </body>
 </html>

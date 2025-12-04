@@ -96,22 +96,19 @@ function alterarEmail($conexao, $usuario) {
 }
 
 function excluirConta($conexao, $usuario) {
-    $senha = $_POST['senha'] ?? '';
-
-    if (!$senha) {
-        die("Erro: Senha necessária para confirmar exclusão");
-    }
-
-    // Verificar se a senha está correta
-    $sql = "SELECT * FROM cadastro WHERE nome_usuario = '$usuario' AND senha = '$senha'";
+    // Buscar o ID do usuário para excluir pelo ID
+    $sql = "SELECT id FROM cadastro WHERE nome_usuario = '$usuario'";
     $resultado = mysqli_query($conexao, $sql);
 
     if (mysqli_num_rows($resultado) === 0) {
-        die("Erro: Senha incorreta");
+        die("Erro: Usuário não encontrado");
     }
 
-    // Excluir a conta
-    $sql_delete = "DELETE FROM cadastro WHERE nome_usuario = '$usuario'";
+    $dados = mysqli_fetch_assoc($resultado);
+    $id_usuario = $dados['id'];
+
+    // Excluir a conta pelo ID
+    $sql_delete = "DELETE FROM cadastro WHERE id = '$id_usuario'";
     $resultado_delete = mysqli_query($conexao, $sql_delete);
 
     if ($resultado_delete) {

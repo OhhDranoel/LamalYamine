@@ -1,4 +1,4 @@
-O tempo de duração do curso oscila entre 3 e 4 anos.
+﻿O tempo de duração do curso oscila entre 3 e 4 anos.
 
 Análise e projeto de sistemas, banco de dados, programação back-end, programação mobile, programação no desenvolvimento de sistemas, ciência de dados e computação gráfica.
 
@@ -17,3 +17,4 @@ O Mini Marco é um cara muito bizarro e meio suspeito
 Tem gosto de cacau
 
 Banana tem gosto doce
+bom dia

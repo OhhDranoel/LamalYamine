@@ -3,7 +3,8 @@
 $conexao = mysqli_connect("localhost", "root", "", "login");
 
 if (!$conexao) {
-    die("Erro ao conectar ao banco: " . mysqli_connect_error());
+    header('Content-Type: application/json; charset=utf-8');
+    die(json_encode(['sucesso' => false, 'mensagem' => 'Erro ao conectar ao banco: ' . mysqli_connect_error()]));
 }
 
 // Dados do formulário
@@ -16,7 +17,9 @@ $conf_senha = $_POST['conf_senha'];
 
 // Verificar se as senhas coincidem
 if ($senha !== $conf_senha) {
-    die("Erro: As senhas não coincidem.");
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['sucesso' => false, 'mensagem' => 'As senhas não coincidem.']);
+    exit;
 }
 
 // INSERT com 6 colunas
@@ -25,10 +28,18 @@ $sql = "INSERT INTO cadastro (nome, idade, nome_usuario, email, senha, conf_senh
 
 $resultado = mysqli_query($conexao, $sql);
 
-// Resposta
+// Resposta em JSON
+header('Content-Type: application/json; charset=utf-8');
 if ($resultado) {
-    echo "Usuário cadastrado com sucesso!";
+    echo json_encode([
+        'sucesso' => true,
+        'mensagem' => 'Usuário cadastrado com sucesso!',
+        'usuario' => $usuario,
+        'email' => $email
+    ]);
 } else {
-    echo "Erro ao cadastrar: " . mysqli_error($conexao);
+    echo json_encode(['sucesso' => false, 'mensagem' => 'Erro ao cadastrar: ' . mysqli_error($conexao)]);
 }
+
+mysqli_close($conexao);
 ?>
