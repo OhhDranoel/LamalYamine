@@ -402,7 +402,8 @@
         <!-- Formulário de Login (versão simplificada do primeiro código) -->
         <div class="login-screen" id="loginScreen">
             <h2>Login</h2>
-            <form method="POST" action="login.php">
+            <div id="loginResponse" style="color: #F22771; margin-bottom: 15px; min-height: 20px; text-align: center; font-size: 0.7rem;"></div>
+            <form method="POST" action="login.php" id="loginForm">
                 <input type="text" name="nome_usuario" placeholder="Usuário" required>
                 <div class="password-container">
                     <input type="password" name="senha" placeholder="Senha" required>
@@ -441,6 +442,48 @@
                 passwordInput.type = 'password';
             }
         }
+
+        // Função para enviar formulário com AJAX
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const responseDiv = document.getElementById('loginResponse');
+            
+            fetch('login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                try {
+                    const resultado = JSON.parse(data);
+                    if (resultado.sucesso) {
+                        // Armazenar dados do usuário no localStorage
+                        localStorage.setItem('usuarioLogado', JSON.stringify({
+                            usuario: resultado.usuario,
+                            email: resultado.email
+                        }));
+                        
+                        responseDiv.textContent = 'Login realizado com sucesso!';
+                        responseDiv.style.color = '#F2E52E';
+                        document.getElementById('loginForm').style.display = 'none';
+                        document.querySelector('.login-screen a').style.display = 'none';
+                        
+                        setTimeout(() => {
+                            window.location.href = '../tela_inicial.html';
+                        }, 2000);
+                    }
+                } catch (e) {
+                    responseDiv.textContent = data;
+                    responseDiv.style.color = '#F22771';
+                }
+            })
+            .catch(error => {
+                responseDiv.textContent = 'Erro ao processar login. Tente novamente.';
+                responseDiv.style.color = '#F22771';
+            });
+        });
     </script>
 </body>
 </html>

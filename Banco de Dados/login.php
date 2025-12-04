@@ -10,14 +10,34 @@ if (!$conexao) {
 $usuario = $_POST['nome_usuario'];
 $senha = $_POST['senha'];
 
-// INSERT NA NOVA TABELA
-$sql = "INSERT INTO criar_conta (nome_usuario, senha) VALUES ('$usuario', '$senha')";
+// Verificar se o usuário existe na tabela de cadastro
+$sql = "SELECT * FROM cadastro WHERE nome_usuario = '$usuario' AND senha = '$senha'";
 $resultado = mysqli_query($conexao, $sql);
 
-// Resposta
-if ($resultado) {
-    echo "Usuário cadastrado com sucesso!";
-} else {
-    echo "Erro ao cadastrar: " . mysqli_error($conexao);
+// Verificar se a consulta foi bem-sucedida
+if (!$resultado) {
+    die("Erro na consulta: " . mysqli_error($conexao));
 }
+
+// Verificar se encontrou o usuário
+if (mysqli_num_rows($resultado) > 0) {
+    // Login bem-sucedido - obter dados do usuário
+    $dados_usuario = mysqli_fetch_assoc($resultado);
+    $email = $dados_usuario['email'];
+
+    // Enviar header JSON e retornar os dados em formato JSON
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'sucesso' => true,
+        'usuario' => $usuario,
+        'email' => $email
+    ]);
+} else {
+    // Usuário não existe ou senha incorreta
+    // Retornar mensagem de erro como texto (frontend trata parse fail)
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "Usuário não existe ou senha incorreta!";
+}
+
+mysqli_close($conexao);
 ?>

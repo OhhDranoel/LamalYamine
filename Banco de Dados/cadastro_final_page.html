@@ -402,7 +402,8 @@
         <!-- Formulário de Login (versão simplificada do primeiro código) -->
         <div class="login-screen" id="loginScreen">
             <h2>Criar Conta</h2>
-<form method="POST" action="cadastrar.php">
+            <div id="cadastroResponse" style="color: #F22771; margin-bottom: 15px; min-height: 20px; text-align: center; font-size: 0.7rem;"></div>
+<form method="POST" action="cadastrar.php" id="cadastroForm">
 
     <!-- Nome de Usuário -->
     <input type="text" name="nome_usuario" placeholder="Nome de Usuário" required>
@@ -431,7 +432,7 @@
     <button type="submit">Cadastrar</button>
 </form>
 
-<a href="index.html">Já tem conta? Fazer Login</a>
+<a href="login_final.html">Já tem conta? Fazer Login</a>
         </div>
     </div>
 
@@ -462,6 +463,40 @@
                 passwordInput.type = 'password';
             }
         }
+
+        // Função para enviar formulário de cadastro com AJAX
+        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const responseDiv = document.getElementById('cadastroResponse');
+            
+            fetch('cadastrar.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                responseDiv.textContent = data;
+                
+                // Se cadastro bem-sucedido, mostrar mensagem e redirecionar
+                if (data.includes("cadastrado com sucesso") || data.includes("sucesso")) {
+                    responseDiv.style.color = '#F2E52E';
+                    responseDiv.textContent = 'Cadastro Realizado com Sucesso!';
+                    document.getElementById('cadastroForm').style.display = 'none';
+                    document.querySelector('.login-screen a').style.display = 'none';
+                    setTimeout(() => {
+                        window.location.href = '../tela_inicial.html';
+                    }, 3000);
+                } else {
+                    responseDiv.style.color = '#F22771';
+                }
+            })
+            .catch(error => {
+                responseDiv.textContent = 'Erro ao processar cadastro. Tente novamente.';
+                responseDiv.style.color = '#F22771';
+            });
+        });
     </script>
 </body>
 </html> 
