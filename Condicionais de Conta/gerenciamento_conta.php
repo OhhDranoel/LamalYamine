@@ -10,9 +10,18 @@ if (!$conexao) {
 $acao = $_POST['acao'] ?? '';
 $usuario = $_POST['usuario'] ?? '';
 
+// Função auxiliar para respostas JSON
+function json_response($conexao, $success, $message) {
+    header('Content-Type: application/json; charset=utf-8');
+    $response = array('success' => $success ? true : false, 'message' => $message);
+    mysqli_close($conexao);
+    echo json_encode($response);
+    exit;
+}
+
 // Validar entrada
 if (!$usuario) {
-    die("Erro: Usuário não identificado");
+    json_response($conexao, false, 'Erro: Usuário não identificado');
 }
 
 switch($acao) {
@@ -34,7 +43,7 @@ function alterarSenha($conexao, $usuario) {
     $nova_senha = $_POST['nova_senha'] ?? '';
 
     if (!$senha_atual || !$nova_senha) {
-        die("Erro: Preencha todos os campos");
+        json_response($conexao, false, 'Erro: Preencha todos os campos');
     }
 
     // Verificar se a senha atual está correta
@@ -42,7 +51,7 @@ function alterarSenha($conexao, $usuario) {
     $resultado = mysqli_query($conexao, $sql);
 
     if (mysqli_num_rows($resultado) === 0) {
-        die("Erro: Senha atual incorreta");
+        json_response($conexao, false, 'Erro: Senha atual incorreta');
     }
 
     // Atualizar a senha
@@ -50,12 +59,10 @@ function alterarSenha($conexao, $usuario) {
     $resultado_update = mysqli_query($conexao, $sql_update);
 
     if ($resultado_update) {
-        echo "Senha alterada com sucesso!";
+        json_response($conexao, true, 'Senha alterada com sucesso!');
     } else {
-        echo "Erro ao alterar senha: " . mysqli_error($conexao);
+        json_response($conexao, false, 'Erro ao alterar senha: ' . mysqli_error($conexao));
     }
-
-    mysqli_close($conexao);
 }
 
 function alterarEmail($conexao, $usuario) {
@@ -63,7 +70,7 @@ function alterarEmail($conexao, $usuario) {
     $senha = $_POST['senha'] ?? '';
 
     if (!$novo_email || !$senha) {
-        die("Erro: Preencha todos os campos");
+        json_response($conexao, false, 'Erro: Preencha todos os campos');
     }
 
     // Verificar se a senha está correta
@@ -71,7 +78,7 @@ function alterarEmail($conexao, $usuario) {
     $resultado = mysqli_query($conexao, $sql);
 
     if (mysqli_num_rows($resultado) === 0) {
-        die("Erro: Senha incorreta");
+        json_response($conexao, false, 'Erro: Senha incorreta');
     }
 
     // Verificar se o email já está em uso
@@ -79,7 +86,7 @@ function alterarEmail($conexao, $usuario) {
     $resultado_check = mysqli_query($conexao, $sql_check);
 
     if (mysqli_num_rows($resultado_check) > 0) {
-        die("Erro: Este email já está em uso");
+        json_response($conexao, false, 'Erro: Este email já está em uso');
     }
 
     // Atualizar o email
@@ -87,12 +94,10 @@ function alterarEmail($conexao, $usuario) {
     $resultado_update = mysqli_query($conexao, $sql_update);
 
     if ($resultado_update) {
-        echo "Email alterado com sucesso!";
+        json_response($conexao, true, 'Email alterado com sucesso!');
     } else {
-        echo "Erro ao alterar email: " . mysqli_error($conexao);
+        json_response($conexao, false, 'Erro ao alterar email: ' . mysqli_error($conexao));
     }
-
-    mysqli_close($conexao);
 }
 
 function excluirConta($conexao, $usuario) {
@@ -101,7 +106,7 @@ function excluirConta($conexao, $usuario) {
     $resultado = mysqli_query($conexao, $sql);
 
     if (mysqli_num_rows($resultado) === 0) {
-        die("Erro: Usuário não encontrado");
+        json_response($conexao, false, 'Erro: Usuário não encontrado');
     }
 
     $dados = mysqli_fetch_assoc($resultado);
@@ -112,11 +117,9 @@ function excluirConta($conexao, $usuario) {
     $resultado_delete = mysqli_query($conexao, $sql_delete);
 
     if ($resultado_delete) {
-        echo "Conta excluída com sucesso!";
+        json_response($conexao, true, 'Conta excluída com sucesso!');
     } else {
-        echo "Erro ao excluir conta: " . mysqli_error($conexao);
+        json_response($conexao, false, 'Erro ao excluir conta: ' . mysqli_error($conexao));
     }
-
-    mysqli_close($conexao);
 }
 ?>

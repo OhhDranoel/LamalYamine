@@ -316,6 +316,59 @@
             color: #1a1a1a !important;
             box-shadow: 0 0 20px rgba(255, 68, 68, 0.8) !important;
         }
+
+        /* Modal de Sucesso */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-modal.show {
+            display: flex;
+            animation: fade-in 0.25s ease;
+        }
+
+        .success-modal-content {
+            background: #071006;
+            border: 3px solid #16A34A;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(22, 163, 74, 0.4);
+        }
+
+        .success-modal h3 {
+            color: #16A34A;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px #16A34A;
+        }
+
+        .success-modal p {
+            color: #F2E52E;
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+        }
+
+        .success-modal button {
+            padding: 10px 25px;
+            border: 2px solid #16A34A;
+            background: #16A34A;
+            color: #071006;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -392,6 +445,15 @@
         </div>
     </div>
 
+    <!-- Modal de Sucesso (Alterar senha / email) -->
+    <div class="success-modal" id="successModal">
+        <div class="success-modal-content">
+            <h3 id="successModalTitle">Sucesso!</h3>
+            <p id="successModalMessage">Sua operação foi realizada com sucesso.</p>
+            <button onclick="fecharSucesso()">OK</button>
+        </div>
+    </div>
+
     <script>
         let usuarioAtual = '';
         let senhaAtual = '';
@@ -417,8 +479,8 @@
             document.getElementById('emailDisplay').textContent = email || 'Não disponível';
         }
 
-        // Mostrar mensagem de resposta
-        function mostrarMensagem(texto, tipo = 'success') {
+        // Mostrar mensagem de resposta (erros ou avisos curtos)
+        function mostrarMensagem(texto, tipo = 'error') {
             const messageDiv = document.getElementById('responseMessage');
             messageDiv.textContent = texto;
             messageDiv.className = 'response-message ' + tipo;
@@ -426,6 +488,17 @@
                 messageDiv.textContent = '';
                 messageDiv.className = 'response-message';
             }, 4000);
+        }
+
+        // Mostrar tela de sucesso (tela modal full-screen)
+        function mostrarSucessoTela(titulo, mensagem) {
+            document.getElementById('successModalTitle').textContent = titulo || 'Sucesso!';
+            document.getElementById('successModalMessage').textContent = mensagem || '';
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        function fecharSucesso() {
+            document.getElementById('successModal').classList.remove('show');
         }
 
         // Alternar visibilidade da senha
@@ -470,14 +543,21 @@
                 body: formData
             })
             .then(response => response.text())
-            .then(data => {
-                if (data.includes('sucesso')) {
-                    mostrarMensagem('Senha alterada com sucesso!', 'success');
-                    document.getElementById('senhaAtual').value = '';
-                    document.getElementById('novaSenha').value = '';
-                    document.getElementById('confirmarSenha').value = '';
-                } else {
-                    mostrarMensagem(data, 'error');
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data && data.success) {
+                        mostrarSucessoTela('Senha alterada', data.message || 'Senha alterada com sucesso!');
+                        document.getElementById('senhaAtual').value = '';
+                        document.getElementById('novaSenha').value = '';
+                        document.getElementById('confirmarSenha').value = '';
+                    } else {
+                        mostrarMensagem((data && data.message) ? data.message : 'Erro ao alterar senha', 'error');
+                    }
+                } catch (e) {
+                    // Se não for JSON, exibir texto limpo (evita mostrar JSON cru)
+                    const trimmed = text ? text.trim() : '';
+                    mostrarMensagem(trimmed || 'Erro ao alterar senha', 'error');
                 }
             })
             .catch(error => {
@@ -511,19 +591,25 @@
                 body: formData
             })
             .then(response => response.text())
-            .then(data => {
-                if (data.includes('sucesso')) {
-                    mostrarMensagem('Email alterado com sucesso!', 'success');
-                    document.getElementById('emailDisplay').textContent = novoEmail;
-                    document.getElementById('novoEmail').value = '';
-                    document.getElementById('senhaEmail').value = '';
-                    
-                    // Atualizar localStorage com o novo email
-                    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-                    usuarioLogado.email = novoEmail;
-                    localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-                } else {
-                    mostrarMensagem(data, 'error');
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data && data.success) {
+                        mostrarSucessoTela('Email alterado', data.message || 'Email alterado com sucesso!');
+                        document.getElementById('emailDisplay').textContent = novoEmail;
+                        document.getElementById('novoEmail').value = '';
+                        document.getElementById('senhaEmail').value = '';
+
+                        // Atualizar localStorage com o novo email
+                        const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado')) || {};
+                        usuarioLogado.email = novoEmail;
+                        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+                    } else {
+                        mostrarMensagem((data && data.message) ? data.message : 'Erro ao alterar email', 'error');
+                    }
+                } catch (e) {
+                    const trimmed = text ? text.trim() : '';
+                    mostrarMensagem(trimmed || 'Erro ao alterar email', 'error');
                 }
             })
             .catch(error => {
@@ -552,15 +638,21 @@
                 body: formData
             })
             .then(response => response.text())
-            .then(data => {
-                if (data.includes('sucesso')) {
-                    mostrarMensagem('Conta excluída com sucesso! Redirecionando...', 'success');
-                    localStorage.removeItem('usuarioLogado');
-                    setTimeout(() => {
-                        window.location.href = '../tela_inicial.html';
-                    }, 2000);
-                } else {
-                    mostrarMensagem(data, 'error');
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data && data.success) {
+                        mostrarSucessoTela('Conta excluída', data.message || 'Conta excluída com sucesso!');
+                        localStorage.removeItem('usuarioLogado');
+                        setTimeout(() => {
+                            window.location.href = '../tela_inicial.html';
+                        }, 1600);
+                    } else {
+                        mostrarMensagem((data && data.message) ? data.message : 'Erro ao excluir conta', 'error');
+                    }
+                } catch (e) {
+                    const trimmed = text ? text.trim() : '';
+                    mostrarMensagem(trimmed || 'Erro ao excluir conta', 'error');
                 }
             })
             .catch(error => {

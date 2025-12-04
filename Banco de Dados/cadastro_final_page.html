@@ -343,6 +343,22 @@
             color: #F22771;
         }
 
+        /* Botão de voltar à tela inicial (mais visível) */
+        .back-button {
+            display: block;
+            margin: 8px auto 0 auto;
+            background: #F2E52E !important;
+            color: #1a1a1a !important;
+            border: none !important;
+            padding: 10px 12px !important;
+            border-radius: 6px !important;
+            cursor: pointer !important;
+            font-family: 'Press Start 2P', cursive !important;
+            font-size: 0.7rem !important;
+            text-align: center;
+            width: auto !important;
+        }
+
         .login-screen a {
             display: block;
             margin-top: 15px;
@@ -431,6 +447,7 @@
 
     <button type="submit">Cadastrar</button>
 </form>
+        <button type="button" class="back-button" onclick="window.location.href='../tela_inicial.html'">Voltar à Tela Inicial</button>
 
 <a href="login_final.html">Já tem conta? Fazer Login</a>
         </div>
